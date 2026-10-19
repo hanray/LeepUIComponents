@@ -1,0 +1,150 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leep · Plucks + hybrid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0A0B;--surface:#141416;--surface-2:#1A1A1D;--line:rgba(240,239,233,0.08);--line-strong:rgba(240,239,233,0.14);--text:#F2F1EC;--dim:#9B9B9E;--faint:#67676B;--green:#3DDC84;--green-ink:#0A3D22;--serif:'Fraunces',Georgia,serif;--sans:'Inter',system-ui,sans-serif;--mono:'JetBrains Mono',monospace;}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;padding:40px 32px 80px}
+.wrap{max-width:860px;margin:0 auto}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:30px}
+.logo{font-family:var(--serif);font-size:20px;font-weight:500;letter-spacing:-0.01em}
+.beta{font-size:10px;letter-spacing:0.14em;color:var(--faint);border:1px solid var(--line-strong);border-radius:4px;padding:2px 6px;text-transform:uppercase}
+.eyebrow{font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(30px,4.6vw,46px);line-height:1.04;letter-spacing:-0.02em;margin-bottom:14px}
+.lede{color:var(--dim);font-size:16px;max-width:64ch}
+.lede b{color:var(--text);font-weight:500}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:26px 0 8px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--text);background:transparent;border:1px solid var(--line-strong);border-radius:8px;padding:8px 14px;cursor:pointer;transition:background .18s,border-color .18s,transform .12s}
+.btn:hover{background:var(--surface-2);border-color:var(--faint)}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--green);color:var(--green-ink);border-color:var(--green)}
+.hint{font-size:12px;color:var(--faint);margin-left:auto}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 22px 20px;margin-top:18px}
+.card.rec{border-color:rgba(61,220,132,0.42)}
+.card-head{display:flex;align-items:baseline;gap:12px;margin-bottom:4px}
+.num{font-family:var(--mono);font-size:12px;color:var(--faint)}
+.cname{font-family:var(--serif);font-size:24px;font-weight:500;letter-spacing:-0.01em}
+.tag{margin-left:auto;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line-strong);border-radius:20px;padding:3px 10px}
+.tag.hot{color:var(--green-ink);background:var(--green);border-color:var(--green)}
+.metaphor{color:var(--dim);font-size:14px;margin:8px 0 16px;max-width:70ch}
+canvas{width:100%;height:158px;display:block;border-radius:10px;background:#0E0E10;cursor:crosshair;touch-action:none}
+.cap{font-size:12px;color:var(--faint);margin-top:10px}
+.cap b{color:var(--green);font-weight:500}
+@media(max-width:620px){body{padding:26px 16px 60px}.hint{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><span class="logo">Leep Audio</span><span class="beta">Beta</span></div>
+  <div class="eyebrow">Waveform · round 2 · before we code</div>
+  <h1>Plucks, and the measured-strip hybrid.</h1>
+  <p class="lede">Real peaks from <b>House Baby</b> again. <b>Tap</b> a waveform to move the playhead; <b>drag across it</b> to select a sample — that's the tap-vs-drag rule in action. On the hybrid, watch the selection turn from precise ruler ticks into a living particle field.</p>
+
+  <div class="controls">
+    <button class="btn primary" id="play"><span id="playlbl">Play</span></button>
+    <span class="hint">Drag on either waveform to set a selection · tap to scrub</span>
+  </div>
+
+  <div class="card">
+    <div class="card-head"><span class="num">07</span><span class="cname">Plucks</span><span class="tag">New · musical</span></div>
+    <p class="metaphor">Horizontal strings at rest. The playhead travels along and plucks them — a local, decaying vibration whose size follows the track's loudness. The selected span keeps ringing in green, like holding down a chord.</p>
+    <canvas data-mode="plucks"></canvas>
+    <p class="cap">Strings are still until touched, so motion is cheap and intentional. Selection reads as <b>sustained vibration</b> inside the handles.</p>
+  </div>
+
+  <div class="card rec">
+    <div class="card-head"><span class="num">08</span><span class="cname">Measured strip + particle selection</span><span class="tag hot">Your hybrid</span></div>
+    <p class="metaphor">The whole track is a precise measuring strip — ruler ticks that accurately reflect amplitude, built for trustworthy reading and exact cuts. The instant you select, that region dissolves into a particle field with a dimension bracket: measurement for the track, creative energy for the sample.</p>
+    <canvas data-mode="hybrid"></canvas>
+    <p class="cap">Precision where you read, <b>personality where you create</b>. Drag to move the sample and watch the particles follow.</p>
+  </div>
+</div>
+
+<script src="./assets/js/peaks.js"></script>
+<script>
+(function(){
+  var PK=(window.LEEP_PEAKS&&window.LEEP_PEAKS.peaks)||null;
+  var DUR=(window.LEEP_PEAKS&&window.LEEP_PEAKS.dur)||203;
+  if(!PK){PK=[];for(var i=0;i<512;i++){var e=Math.sin(i/512*Math.PI);PK.push(Math.max(0.06,(0.4+0.6*Math.abs(Math.sin(i*0.6)*0.5+Math.sin(i*0.21)*0.3+Math.sin(i*1.7)*0.2))*e));}}
+  var BASE=PK.length;
+  var GREEN='#3DDC84',SELFILL='rgba(61,220,132,0.12)',SELEDGE='rgba(61,220,132,0.65)',PLAYED='rgba(240,239,233,0.5)',MUTE='rgba(240,239,233,0.18)',PH='#F4F2EC';
+  function amp(f){if(f<0)f=0;if(f>1)f=1;var x=f*(BASE-1),i=Math.floor(x),t=x-i,a=PK[i],b=PK[Math.min(BASE-1,i+1)];return a+(b-a)*t;}
+  function fmt(s){var m=Math.floor(s/60),ss=Math.round(s%60);return m+':'+(ss<10?'0':'')+ss;}
+
+  var cv=[].slice.call(document.querySelectorAll('canvas[data-mode]'));
+  var states=cv.map(function(c){return {c:c,mode:c.getAttribute('data-mode'),sel0:0.37,sel1:0.52,prog:0.30};});
+  var ctxs=[];
+  function setup(){ctxs=states.map(function(s){var c=s.c,r=c.getBoundingClientRect(),dpr=window.devicePixelRatio||1;c.width=Math.max(1,r.width*dpr);c.height=Math.max(1,r.height*dpr);var x=c.getContext('2d');x.setTransform(dpr,0,0,dpr,0,0);c._w=r.width;c._h=r.height;return x;});}
+  setup();
+  window.addEventListener('resize',function(){clearTimeout(window._rt);window._rt=setTimeout(setup,120);});
+
+  states.forEach(function(st){
+    var dragging=false,sx=0,moved=false;
+    st.c.addEventListener('pointerdown',function(e){dragging=true;moved=false;sx=e.offsetX;st.c.setPointerCapture(e.pointerId);});
+    st.c.addEventListener('pointermove',function(e){if(!dragging)return;if(Math.abs(e.offsetX-sx)>4)moved=true;if(moved){var a=sx/st.c._w,b=e.offsetX/st.c._w;st.sel0=Math.max(0,Math.min(a,b));st.sel1=Math.min(1,Math.max(a,b));}});
+    st.c.addEventListener('pointerup',function(e){if(dragging&&!moved){st.prog=Math.max(0,Math.min(1,e.offsetX/st.c._w));}dragging=false;});
+  });
+
+  function edges(x,st,W,H){x.fillStyle=SELEDGE;x.fillRect(st.sel0*W-0.5,0,1,H);x.fillRect(st.sel1*W-0.5,0,1,H);}
+  function bracket(x,st,W){var y=7,s=st.sel0*W,e=st.sel1*W;x.strokeStyle=SELEDGE;x.lineWidth=1.2;x.beginPath();x.moveTo(s,y+5);x.lineTo(s,y);x.lineTo(e,y);x.lineTo(e,y+5);x.stroke();
+    x.fillStyle=GREEN;x.font='500 9px "JetBrains Mono",monospace';x.textAlign='center';x.textBaseline='bottom';x.fillText(fmt((st.sel1-st.sel0)*DUR),(s+e)/2,y-2);}
+  function playhead(x,st,W,H){var px=st.prog*W;x.fillStyle=PH;x.fillRect(px-0.5,0,1.1,H);x.beginPath();x.arc(px,3,2.6,0,6.28);x.fill();}
+
+  function drawPlucks(x,st,W,H,t){
+    var S=7,top=H*0.17,bot=H*0.85,gap=(bot-top)/(S-1),playX=st.prog*W,step=4;
+    var s0=st.sel0*W,s1=st.sel1*W;
+    x.fillStyle=SELFILL;x.fillRect(s0,0,s1-s0,H);
+    for(var s=0;s<S;s++){
+      var baseY=top+s*gap,pts=[];
+      for(var xx=0;xx<=W;xx+=step){var f=xx/W,a=amp(f);
+        var dpg=Math.exp(-Math.pow((xx-playX)/(W*0.045),2));
+        var inSel=(xx>=s0&&xx<=s1)?1:0;
+        var env=Math.max(dpg,inSel*0.75);
+        var disp=Math.sin(xx*0.16-t*6+s*0.7)*env*(0.35+a*0.9)*(gap*0.75);
+        pts.push([xx,baseY+disp]);}
+      function stroke(col,lw,clip){x.save();if(clip){x.beginPath();x.rect(clip[0],0,clip[1]-clip[0],H);x.clip();}x.strokeStyle=col;x.lineWidth=lw;x.beginPath();for(var i=0;i<pts.length;i++){i?x.lineTo(pts[i][0],pts[i][1]):x.moveTo(pts[i][0],pts[i][1]);}x.stroke();x.restore();}
+      stroke(MUTE,1,null);
+      stroke(GREEN,1.4,[s0,s1]);
+      stroke(PLAYED,1.4,[playX-W*0.08,playX+W*0.08]);
+    }
+    for(var p=0;p<5;p++){var jy=Math.sin(t*9+p*1.7)*5,jx=Math.cos(t*7+p)*4;x.globalAlpha=0.6+0.4*Math.sin(t*5+p);x.fillStyle=GREEN;x.beginPath();x.arc(playX+jx,H/2+jy,1.5,0,6.28);x.fill();}
+    x.globalAlpha=1;
+    edges(x,st,W,H);bracket(x,st,W);playhead(x,st,W,H);
+  }
+
+  function drawHybrid(x,st,W,H,t){
+    var baseY=H*0.72,s0=st.sel0*W,s1=st.sel1*W;
+    x.strokeStyle='rgba(240,239,233,0.08)';x.lineWidth=0.5;
+    for(var g=0;g<=8;g++){var gx=g/8*W;x.beginPath();x.moveTo(gx,H*0.14);x.lineTo(gx,baseY);x.stroke();}
+    x.strokeStyle='rgba(240,239,233,0.22)';x.lineWidth=1;x.beginPath();x.moveTo(0,baseY);x.lineTo(W,baseY);x.stroke();
+    var ts=6,tn=Math.floor(W/ts);
+    for(var m=0;m<tn;m++){var cx=m*ts+1,f=cx/W;if(cx>=s0&&cx<=s1)continue;var a=amp(f),len=a*(baseY-H*0.16);x.strokeStyle=f<=st.prog?PLAYED:MUTE;x.lineWidth=2;x.beginPath();x.moveTo(cx,baseY);x.lineTo(cx,baseY-len);x.stroke();}
+    x.fillStyle=SELFILL;x.fillRect(s0,0,s1-s0,baseY);
+    var cstep=5;
+    for(var px=s0;px<=s1;px+=cstep){var f2=px/W,a2=amp(f2),nd=Math.max(1,Math.round(a2*9)),col=baseY-H*0.16;
+      for(var d=0;d<nd;d++){var fr=nd>1?d/(nd-1):0,py=baseY-fr*a2*(baseY-H*0.16);var idx=px*0.3+d;var jx=Math.sin(t*3+idx)*1.3,jy=Math.cos(t*3.4+idx)*1.3;
+        x.globalAlpha=0.55+0.45*Math.sin(t*2.4+idx);x.fillStyle=GREEN;x.beginPath();x.arc(px+jx,py+jy,1.6,0,6.28);x.fill();}}
+    x.globalAlpha=1;
+    edges(x,st,W,baseY);bracket(x,st,W);playhead(x,st,W,H);
+  }
+
+  var playing=false,last=null;
+  function frame(tms){if(last==null)last=tms;var dt=(tms-last)/1000;last=tms;var t=tms/1000;
+    states.forEach(function(st,i){if(playing){st.prog+=dt/DUR;if(st.prog>1)st.prog=0;}var x=ctxs[i],W=st.c._w,H=st.c._h;x.clearRect(0,0,W,H);if(st.mode==='plucks')drawPlucks(x,st,W,H,t);else drawHybrid(x,st,W,H,t);});
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  var pb=document.getElementById('play'),lbl=document.getElementById('playlbl');
+  pb.addEventListener('click',function(){playing=!playing;lbl.textContent=playing?'Pause':'Play';});
+})();
+</script>
+</body>
+</html>

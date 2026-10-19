@@ -1,0 +1,247 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Leep · Waveform exploration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0A0B; --surface:#141416; --surface-2:#1A1A1D; --line:rgba(240,239,233,0.08);
+  --line-strong:rgba(240,239,233,0.14); --text:#F2F1EC; --dim:#9B9B9E; --faint:#67676B;
+  --green:#3DDC84; --green-ink:#0A3D22;
+  --serif:'Fraunces',Georgia,serif; --sans:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.55;padding:40px 32px 80px}
+.wrap{max-width:1180px;margin:0 auto}
+.topbar{display:flex;align-items:center;gap:10px;margin-bottom:38px}
+.logo{font-family:var(--serif);font-size:20px;font-weight:500;letter-spacing:-0.01em}
+.beta{font-size:10px;letter-spacing:0.14em;color:var(--faint);border:1px solid var(--line-strong);border-radius:4px;padding:2px 6px;text-transform:uppercase}
+.eyebrow{font-size:11px;letter-spacing:0.22em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
+h1{font-family:var(--serif);font-weight:500;font-size:clamp(34px,5vw,58px);line-height:1.02;letter-spacing:-0.02em;max-width:17ch;margin-bottom:18px}
+.lede{color:var(--dim);font-size:17px;max-width:62ch}
+.lede b{color:var(--text);font-weight:500}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:34px 0 10px;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--sans);font-size:13px;font-weight:500;color:var(--text);background:transparent;border:1px solid var(--line-strong);border-radius:8px;padding:8px 14px;cursor:pointer;transition:background .18s ease,border-color .18s ease,transform .12s ease}
+.btn:hover{background:var(--surface-2);border-color:var(--faint)}
+.btn:active{transform:scale(.98)}
+.btn.primary{background:var(--green);color:var(--green-ink);border-color:var(--green)}
+.btn.primary:hover{filter:brightness(1.06)}
+.play-ico{width:9px;height:9px;border-radius:2px;background:currentColor;transition:border-radius .2s}
+.legend{display:flex;gap:18px;margin-left:auto;font-size:12px;color:var(--dim);flex-wrap:wrap}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.scrubline{font-size:12px;color:var(--faint);margin:0 0 26px 2px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;transition:max-width .3s ease}
+.grid.mobile{grid-template-columns:1fr;max-width:392px;margin:0 auto}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 20px 18px;transition:border-color .2s ease,transform .2s ease}
+.card:hover{border-color:var(--line-strong)}
+.card.rec{border-color:rgba(61,220,132,0.42)}
+.card-head{display:flex;align-items:baseline;gap:12px;margin-bottom:3px}
+.num{font-family:var(--mono);font-size:12px;color:var(--faint)}
+.cname{font-family:var(--serif);font-size:22px;font-weight:500;letter-spacing:-0.01em}
+.tag{margin-left:auto;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--dim);border:1px solid var(--line-strong);border-radius:20px;padding:3px 10px;white-space:nowrap}
+.tag.hot{color:var(--green-ink);background:var(--green);border-color:var(--green)}
+.metaphor{color:var(--dim);font-size:13.5px;margin:6px 0 16px;min-height:38px}
+canvas{width:100%;height:122px;display:block;border-radius:8px;background:#0E0E10;cursor:crosshair}
+.specrow{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px;padding-top:15px;border-top:1px solid var(--line)}
+.spec{display:flex;flex-direction:column;gap:5px}
+.spec .k{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--faint)}
+.pips{display:flex;gap:3px}
+.pip{width:6px;height:6px;border-radius:50%;background:var(--line-strong)}
+.pip.on{background:var(--green)}
+.foot{margin-top:46px;padding-top:26px;border-top:1px solid var(--line);color:var(--dim);font-size:14px;max-width:70ch}
+.foot b{color:var(--text);font-weight:500}
+.foot .rec-name{color:var(--green)}
+@media(max-width:720px){body{padding:28px 18px 60px}.grid{grid-template-columns:1fr}.legend{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar"><span class="logo">Leep Audio</span><span class="beta">Beta</span></div>
+  <div class="eyebrow">Waveform · visual exploration · phase 1</div>
+  <h1>Six ways to make a waveform feel like a tool.</h1>
+  <p class="lede">Same track (<b>House Baby</b>), same 512 real peaks from the master, same playhead, same sample selection — so the only variable is the <b>visual language</b>. Selection is the green band; extraction is the point of the whole player, so each concept is judged on how clearly you can grab a region and pull a sample.</p>
+
+  <div class="controls">
+    <button class="btn primary" id="play"><span class="play-ico" id="ico"></span><span id="playlbl">Play</span></button>
+    <button class="btn" id="mob">Mobile width</button>
+    <div class="legend">
+      <span><i class="dot" style="background:rgba(240,239,233,0.5)"></i>Played</span>
+      <span><i class="dot" style="background:rgba(240,239,233,0.17)"></i>Unplayed</span>
+      <span><i class="dot" style="background:var(--green)"></i>Selected sample</span>
+    </div>
+  </div>
+  <p class="scrubline">Selection fixed at 1:16 – 1:52 across all six for a fair read · press Play to see motion character</p>
+
+  <div class="grid" id="grid"></div>
+
+  <div class="foot">
+    <b>Recommendation.</b> Primary direction: <b class="rec-name">Core sample</b> — it's the only concept where the visual metaphor <i>is</i> the product (you extract a measured core of sound), it stays legible on mobile, and it borrows the precision handles for exact boundaries. Alternative: <b>Precision instrument</b> when accuracy outranks personality. Full scoring, interaction flow, and trade-offs are in the chat response.
+  </div>
+</div>
+
+<script src="./assets/js/peaks.js"></script>
+<script>
+(function(){
+  var PK = (window.LEEP_PEAKS && window.LEEP_PEAKS.peaks) || null;
+  var DUR = (window.LEEP_PEAKS && window.LEEP_PEAKS.dur) || 203;
+  if(!PK){ PK=[]; for(var i=0;i<512;i++){var e=Math.sin(i/512*Math.PI);PK.push(Math.max(0.06,(0.4+0.6*Math.abs(Math.sin(i*0.6)*0.5+Math.sin(i*0.21)*0.3+Math.sin(i*1.7)*0.2))*e));} }
+  var BASE=PK.length;
+  var GREEN='#3DDC84', SELFILL='rgba(61,220,132,0.14)', SELEDGE='rgba(61,220,132,0.6)';
+  var PLAYED='rgba(240,239,233,0.52)', MUTE='rgba(240,239,233,0.17)', PH='#F4F2EC';
+  var SEL0=0.373, SEL1=0.512;
+
+  function amp(f){ if(f<0)f=0; if(f>1)f=1; var x=f*(BASE-1); var i=Math.floor(x), t=x-i; var a=PK[i], b=PK[Math.min(BASE-1,i+1)]; return a+(b-a)*t; }
+  function inSel(f){ return f>=SEL0 && f<=SEL1; }
+  function baseCol(f,prog){ return f<=prog?PLAYED:MUTE; }
+
+  var CONFIG=[
+    {id:'ascii',num:'01',name:'ASCII soundscape',tag:'Most distinctive',hot:false,
+      metaphor:'Monospaced glyphs; density and weight carry amplitude. Feels like a creative instrument, not a stream.',
+      pips:{Distinct:5,Precision:2,Mobile:2,Cost:2}},
+    {id:'particle',num:'02',name:'Particle field',tag:'Most expressive',hot:false,
+      metaphor:'Dots trace the sound silhouette. Motion stays local to the playhead and selection to save battery.',
+      pips:{Distinct:4,Precision:2,Mobile:3,Cost:3}},
+    {id:'precision',num:'03',name:'Precision instrument',tag:'Most precise',hot:false,
+      metaphor:'Fine mirrored lines with endpoint dots and a ruled axis. Scientific, built for exact boundaries.',
+      pips:{Distinct:2,Precision:5,Mobile:4,Cost:4}},
+    {id:'ribbon',num:'04',name:'Ribbon topology',tag:'Most editorial',hot:false,
+      metaphor:'One continuous contour with layered fills. The sample reads as a cross-section of the whole piece.',
+      pips:{Distinct:3,Precision:3,Mobile:4,Cost:4}},
+    {id:'core',num:'05',name:'Core sample',tag:'Recommended',hot:true,
+      metaphor:'Topographic strata; the selection is a vertical core you extract from the terrain. The metaphor is the product.',
+      pips:{Distinct:5,Precision:4,Mobile:3,Cost:3}},
+    {id:'strip',num:'06',name:'Measured strip',tag:'New hybrid',hot:false,
+      metaphor:'A ruled measuring strip. The selection gets a dimension bracket — you are cutting a measured length of audio.',
+      pips:{Distinct:4,Precision:5,Mobile:4,Cost:4}}
+  ];
+
+  var grid=document.getElementById('grid'), canvases=[];
+  CONFIG.forEach(function(c){
+    var card=document.createElement('div'); card.className='card'+(c.hot?' rec':'');
+    var pips=Object.keys(c.pips).map(function(k){
+      var dots=''; for(var i=0;i<5;i++){dots+='<i class="pip'+(i<c.pips[k]?' on':'')+'"></i>';}
+      return '<div class="spec"><span class="k">'+k+'</span><div class="pips">'+dots+'</div></div>';
+    }).join('');
+    card.innerHTML='<div class="card-head"><span class="num">'+c.num+'</span><span class="cname">'+c.name+'</span>'
+      +'<span class="tag'+(c.hot?' hot':'')+'">'+c.tag+'</span></div>'
+      +'<p class="metaphor">'+c.metaphor+'</p>'
+      +'<canvas data-mode="'+c.id+'"></canvas>'
+      +'<div class="specrow">'+pips+'</div>';
+    grid.appendChild(card);
+    canvases.push(card.querySelector('canvas'));
+  });
+
+  var ctxs=[];
+  function setup(){ ctxs=canvases.map(function(c){ var r=c.getBoundingClientRect(); var dpr=window.devicePixelRatio||1; c.width=Math.max(1,r.width*dpr); c.height=Math.max(1,r.height*dpr); var x=c.getContext('2d'); x.setTransform(dpr,0,0,dpr,0,0); c._w=r.width; c._h=r.height; return x; }); }
+  setup();
+  window.addEventListener('resize',function(){clearTimeout(window._rt);window._rt=setTimeout(setup,120);});
+
+  function selBG(x,W,H){ var sx=SEL0*W, sw=(SEL1-SEL0)*W; x.fillStyle=SELFILL; x.fillRect(sx,0,sw,H); }
+  function edges(x,W,H){ x.fillStyle=SELEDGE; x.fillRect(SEL0*W-0.5,0,1,H); x.fillRect(SEL1*W-0.5,0,1,H); }
+  function bracket(x,W,H){ var y=7,s=SEL0*W,e=SEL1*W; x.strokeStyle=SELEDGE; x.lineWidth=1.2; x.beginPath(); x.moveTo(s,y+5);x.lineTo(s,y);x.lineTo(e,y);x.lineTo(e,y+5); x.stroke(); }
+  function playhead(x,W,H,prog){ var px=prog*W; x.fillStyle=PH; x.fillRect(px-0.5,0,1.1,H); x.beginPath(); x.arc(px,3,2.6,0,6.28); x.fill(); }
+
+  function draw(c,x,mode,prog,t){
+    var W=c._w,H=c._h,mid=H/2; x.clearRect(0,0,W,H);
+
+    if(mode==='ascii'){
+      selBG(x,W,H);
+      var cw=7.2, cols=Math.max(8,Math.floor(W/cw)), rows=9, rh=(H*0.82)/rows, ramp=' .:-=+*#';
+      x.textAlign='center'; x.textBaseline='middle'; x.font='12px "JetBrains Mono",monospace';
+      for(var ci=0;ci<cols;ci++){ var f=ci/cols, a=amp(f), px=ci*(W/cols)+(W/cols)/2, sel=inSel(f);
+        for(var r=0;r<rows;r++){ var dist=Math.abs(r-(rows-1)/2)/((rows-1)/2), lvl=a-dist; if(lvl<=0.05)continue;
+          var gi=Math.max(0,Math.min(ramp.length-1,Math.round(lvl*(ramp.length-1)))); var ch=ramp[gi];
+          x.fillStyle=sel?GREEN:baseCol(f,prog); x.globalAlpha=(sel?0.7:0.5)+0.5*lvl;
+          x.fillText(ch,px,mid+(r-(rows-1)/2)*rh); } }
+      x.globalAlpha=1; edges(x,W,H);
+
+    } else if(mode==='particle'){
+      selBG(x,W,H);
+      var pc=Math.max(16,Math.floor(W/6)), md=8;
+      for(var i=0;i<pc;i++){ var f=i/pc, a=amp(f), cx=f*W, sel=inSel(f), near=Math.abs(f-prog)<0.022;
+        var nd=Math.max(1,Math.round(a*md)), spread=a*H*0.42;
+        for(var d=0;d<nd;d++){ var off=nd>1?(d/(nd-1))*spread:0, j=near?Math.sin(t*7+d+i)*1.6:0, rr=near?2.2:(sel?1.7:1.5);
+          x.globalAlpha=near?1:(sel?0.95:0.82); x.fillStyle=sel?GREEN:baseCol(f,prog);
+          x.beginPath();x.arc(cx,mid-off+j,rr,0,6.28);x.fill();
+          x.beginPath();x.arc(cx,mid+off+j,rr,0,6.28);x.fill(); } }
+      x.globalAlpha=1; edges(x,W,H);
+
+    } else if(mode==='precision'){
+      x.strokeStyle='rgba(240,239,233,0.1)';x.lineWidth=1;x.beginPath();x.moveTo(0,mid);x.lineTo(W,mid);x.stroke();
+      selBG(x,W,H);
+      var st=3, n=Math.floor(W/st);
+      for(var k=0;k<n;k++){ var cx=k*st+1, f=cx/W, a=amp(f), h=a*H*0.44, sel=inSel(f), col=sel?GREEN:baseCol(f,prog);
+        x.strokeStyle=col;x.lineWidth=1.3;x.globalAlpha=0.9;x.beginPath();x.moveTo(cx,mid-h);x.lineTo(cx,mid+h);x.stroke();
+        x.globalAlpha=1;x.fillStyle=col;x.beginPath();x.arc(cx,mid-h,1.3,0,6.28);x.fill();x.beginPath();x.arc(cx,mid+h,1.3,0,6.28);x.fill(); }
+      edges(x,W,H); bracket(x,W,H);
+
+    } else if(mode==='ribbon'){
+      function path(sign){ x.beginPath(); x.moveTo(0,mid); var pts=Math.floor(W/3);
+        for(var i=0;i<=pts;i++){ var f=i/pts, px=f*W, py=mid+sign*amp(f)*H*0.42; x.lineTo(px,py);} x.lineTo(W,mid); x.closePath(); }
+      x.fillStyle='rgba(240,239,233,0.06)';path(-1);x.fill();path(1);x.fill();
+      x.save();x.beginPath();x.rect(0,0,prog*W,H);x.clip();x.fillStyle='rgba(240,239,233,0.14)';path(-1);x.fill();path(1);x.fill();x.restore();
+      x.save();x.beginPath();x.rect(SEL0*W,0,(SEL1-SEL0)*W,H);x.clip();x.fillStyle='rgba(61,220,132,0.34)';path(-1);x.fill();path(1);x.fill();x.restore();
+      x.strokeStyle=GREEN;x.lineWidth=1.4;x.beginPath();var pp=Math.floor(W/3);
+      for(var i2=0;i2<=pp;i2++){var f2=i2/pp,px2=f2*W,py2=mid-amp(f2)*H*0.42;i2?x.lineTo(px2,py2):x.moveTo(px2,py2);}x.stroke();
+      edges(x,W,H); bracket(x,W,H);
+
+    } else if(mode==='core'){
+      function sil(){ x.beginPath(); x.moveTo(0,mid); var pts=Math.floor(W/3);
+        for(var i=0;i<=pts;i++){var f=i/pts;x.lineTo(f*W,mid-amp(f)*H*0.44);}
+        for(var j=pts;j>=0;j--){var f2=j/pts;x.lineTo(f2*W,mid+amp(f2)*H*0.44);} x.closePath(); }
+      x.save();sil();x.clip();
+      x.fillStyle='rgba(240,239,233,0.05)';x.fillRect(0,0,W,H);
+      x.strokeStyle='rgba(240,239,233,0.14)';x.lineWidth=0.5;
+      for(var yy=4;yy<H;yy+=7){x.beginPath();x.moveTo(0,yy);x.lineTo(W,yy);x.stroke();}
+      x.fillStyle='rgba(240,239,233,0.08)';x.fillRect(0,0,prog*W,H);
+      x.restore();
+      x.save();x.beginPath();x.rect(SEL0*W,0,(SEL1-SEL0)*W,H);x.clip();sil();x.fillStyle='rgba(61,220,132,0.26)';x.fill();
+      x.strokeStyle='rgba(61,220,132,0.3)';x.lineWidth=0.5;for(var y2=4;y2<H;y2+=7){x.beginPath();x.moveTo(0,y2);x.lineTo(W,y2);x.stroke();}x.restore();
+      x.setLineDash([3,3]);x.strokeStyle=SELEDGE;x.lineWidth=1;
+      x.beginPath();x.moveTo(SEL0*W,0);x.lineTo(SEL0*W,H);x.moveTo(SEL1*W,0);x.lineTo(SEL1*W,H);x.stroke();x.setLineDash([]);
+      bracket(x,W,H);
+      x.fillStyle=GREEN;x.font='500 9px "JetBrains Mono",monospace';x.textAlign='center';x.textBaseline='alphabetic';
+      x.fillText('CORE',(SEL0+SEL1)/2*W,H-5);
+
+    } else if(mode==='strip'){
+      var baseY=H*0.74;
+      x.strokeStyle='rgba(240,239,233,0.09)';x.lineWidth=0.5;
+      for(var g=0;g<=8;g++){var gx=g/8*W;x.beginPath();x.moveTo(gx,H*0.12);x.lineTo(gx,baseY);x.stroke();}
+      selBG(x,W,baseY);
+      x.strokeStyle='rgba(240,239,233,0.22)';x.lineWidth=1;x.beginPath();x.moveTo(0,baseY);x.lineTo(W,baseY);x.stroke();
+      var ts=6, tn=Math.floor(W/ts);
+      for(var m=0;m<tn;m++){var cx=m*ts+1,f=cx/W,a=amp(f),len=a*(baseY-H*0.14),sel=inSel(f);
+        x.strokeStyle=sel?GREEN:baseCol(f,prog);x.lineWidth=2;x.beginPath();x.moveTo(cx,baseY);x.lineTo(cx,baseY-len);x.stroke();}
+      var dy=H*0.12,s=SEL0*W,e=SEL1*W;
+      x.strokeStyle=SELEDGE;x.lineWidth=1.1;x.beginPath();
+      x.moveTo(s,dy-4);x.lineTo(s,dy+4);x.moveTo(s,dy);x.lineTo(e,dy);x.moveTo(e,dy-4);x.lineTo(e,dy+4);x.stroke();
+      x.fillStyle=GREEN;x.font='500 9px "JetBrains Mono",monospace';x.textAlign='center';x.textBaseline='bottom';
+      x.fillText('0:36',(s+e)/2,dy-6);
+      edges(x,W,baseY);
+    }
+    playhead(x,W,H,prog);
+  }
+
+  var playing=false, prog=0.30, last=null;
+  function frame(ts){ if(last==null)last=ts; var dt=(ts-last)/1000; last=ts;
+    if(playing){ prog+=dt/DUR; if(prog>1)prog=0; }
+    var t=ts/1000;
+    for(var i=0;i<canvases.length;i++){ draw(canvases[i],ctxs[i],canvases[i].getAttribute('data-mode'),prog,t); }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+
+  var pb=document.getElementById('play'),ico=document.getElementById('ico'),lbl=document.getElementById('playlbl');
+  pb.addEventListener('click',function(){ playing=!playing; lbl.textContent=playing?'Pause':'Play'; ico.style.borderRadius=playing?'50%':'2px'; });
+  var mb=document.getElementById('mob');
+  mb.addEventListener('click',function(){ grid.classList.toggle('mobile'); mb.textContent=grid.classList.contains('mobile')?'Desktop width':'Mobile width'; setTimeout(setup,340); });
+})();
+</script>
+</body>
+</html>

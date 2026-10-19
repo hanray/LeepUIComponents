@@ -1,0 +1,303 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>House Baby · Grugz — Leep Audio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./assets/css/leep.css?v=10">
+</head>
+<body>
+<header class="nav">
+  <a class="brand" href="./index.html">Leep&nbsp;Audio <span class="beta">Beta</span></a>
+  <nav class="nav-mid">
+    <a href="./browse.html" class="active">Discover</a>
+    <a href="#">Collaborations</a><a href="#">My Music</a><a href="#">Competitions</a><a href="#">Promo Studio</a>
+  </nav>
+  <div class="nav-right">
+    <label class="search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Search artists, tracks, genres"></label>
+    <span class="credits">142 CR</span><span class="me"></span>
+  </div>
+</header>
+
+<main class="layout">
+  <aside class="rail rail-left">
+    <div class="rail-section">
+      <div class="rail-h">Discover</div>
+      <a class="rail-link" href="./browse.html"><span class="ico"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span>For you</a>
+      <a class="rail-link" href="./browse.html"><span class="ico"><svg viewBox="0 0 24 24"><path d="M4 16l5-6 4 4 7-9"/></svg></span>Trending</a>
+      <a class="rail-link" href="./browse.html"><span class="ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20a6 6 0 0112 0"/><path d="M16 6a3 3 0 010 6"/></svg></span>People</a>
+    </div>
+    <div class="rail-section">
+      <div class="rail-h">Your sound</div>
+      <a class="rail-link active"><span class="ico"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2 4 4 0 017 2c0 5.5-7 10-7 10z"/></svg></span>Liked tracks<span class="count">28</span></a>
+      <a class="rail-link"><span class="ico"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-6-4-6 4z"/></svg></span>Saved samples<span class="count" id="savedCount" style="display:none">0</span></a>
+    </div>
+    <div class="rail-section">
+      <div class="rail-h">Genres</div>
+      <a class="genre">Electronic</a><a class="genre">Rock &amp; metal</a><a class="genre">Alt pop</a><a class="genre">Soul / R&amp;B</a><a class="genre">Hip-hop</a>
+    </div>
+  </aside>
+
+  <section class="center">
+    <nav class="crumb" aria-label="Breadcrumb"><a href="./browse.html">Home</a><span class="sep">&rsaquo;</span><span class="cur">Liked tracks</span></nav>
+
+    <div class="artist-row"><span class="artist-ava"><img src="https://i.pravatar.cc/80?img=13" alt="Grugz"></span><h1>Grugz</h1></div>
+    <div class="divider"></div>
+
+    <div class="hero playing" id="hero">
+      <div class="cover-grad"></div>
+      <img class="cover" src="./assets/img/house-baby.webp?v=6" alt="House Baby artwork">
+      <div class="hero-scrim"></div>
+
+      <div class="hero-top">
+        <div class="eyebrow" style="color:#bfeee6">New release</div>
+        <div class="hero-title">House&nbsp;Baby</div>
+      </div>
+      <div class="sampled">Created from a sample of <b>HD&rsquo;s &ldquo;Jump&rdquo;</b></div>
+
+      <div class="hero-sample" id="heroSample">
+        <div class="sel-panel">
+          <div class="sel-head"><span class="sel-brand"><svg viewBox="0 0 20 16"><rect x="1" y="6" width="2.6" height="4" rx="1.1" fill="#2BD4C0"/><rect x="5.2" y="3" width="2.6" height="10" rx="1.1" fill="#2BD4C0"/><rect x="9.4" y="1" width="2.6" height="14" rx="1.1" fill="#2BD4C0"/><rect x="13.6" y="5" width="2.6" height="6" rx="1.1" fill="#2BD4C0"/></svg>Leep</span><button class="sel-close" id="clearBtn" aria-label="Close selection"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div><div class="sel-label">Selected <b id="selRange">0:00 &mdash; 0:00</b></div>
+          <div class="hero-actions">
+            
+            <button class="btn on-image" id="saveBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Save</button>
+            <button class="btn on-image" id="previewBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>Preview</button>
+            <button class="btn primary" id="downloadBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg>Download sample</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-wave"><canvas id="wave" aria-label="Waveform — click to play from here, left-drag to scrub, right-click-drag to select"></canvas></div>
+
+      <div class="hero-controls">
+        <div class="hl">
+          <button class="hp-play" id="playBtn" aria-label="Play"></button>
+          <span class="cb-time"><span class="cur" id="cur">0:00</span> / <span id="dur">3:24</span></span>
+          <div class="vol">
+            <svg viewBox="0 0 24 24" style="width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.6"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a3 3 0 010 6"/></svg>
+            <input type="range" class="slider" id="vol" min="0" max="1" step="0.01" value="0.8" aria-label="Volume">
+          </div>
+        </div>
+        <div class="hr">
+          <button class="btn follow on-image" id="followBtn"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span id="followLbl">Follow artist</span></button>
+          <button class="icon-btn" id="likeBtn" aria-label="Like track" title="Like"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2 4 4 0 017 2c0 5.5-7 10-7 10z"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="hint-row">
+      <p class="sample-hint"><span class="hint-desktop"><b>Right-click and drag</b> to select a sample</span><span class="hint-touch"><b>Tap "Select sample"</b>, then drag across the waveform</span></p>
+      <button class="sel-toggle" id="selToggle" aria-pressed="false" title="Select a sample"><svg viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="3"/></svg>Select sample</button>
+      
+    </div>
+
+    <div class="below">
+      <div class="content">
+        <div class="fb">
+          <div class="fb-label">Leave feedback</div>
+          <textarea id="fbText" placeholder="Keep the feedback useful and respectful"></textarea>
+          <div class="fb-field">
+            <div class="fb-label">Timestamp (optional)</div>
+            <input id="fbTime" placeholder="0:20">
+            <div class="sub">You can leave your feedback at a specific time in the track.</div>
+          </div>
+          <div class="fb-foot">
+            <button class="btn" id="fbBtn">Comment <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 12h6M13 9l3 3-3 3"/></svg></button>
+            <span class="fb-err" id="fbErr"></span>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><h2>Open stems</h2><span class="meta">03 files</span></div>
+          <div class="stem-row"><span class="sn">Drums</span><span class="sm">WAV · 124 BPM</span><button class="icon-btn sd" aria-label="Download stem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg></button></div>
+          <div class="stem-row"><span class="sn">Bassline</span><span class="sm">WAV · F minor</span><button class="icon-btn sd" aria-label="Download stem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg></button></div>
+          <div class="stem-row"><span class="sn">Vocal chop</span><span class="sm">WAV · dry</span><button class="icon-btn sd" aria-label="Download stem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="M7 11l5 5 5-5"/><path d="M5 21h14"/></svg></button></div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><h2>Inspired remixes</h2><span class="meta">02 tracks</span></div>
+          <div class="remix">
+            <div class="remix-card"><div class="rc-cover">01</div><div><div class="rc-uses">USES 1:16 – 1:52</div><div class="rc-t">Half Light</div><div class="rc-by">by Lia North &middot; 3 days ago</div></div><button class="icon-btn rc-play" aria-label="Play remix"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5v14l11-7z"/></svg></button></div>
+            <div class="remix-card"><div class="rc-cover">02</div><div><div class="rc-uses">USES 2:40 – 3:01</div><div class="rc-t">Nocturne FM</div><div class="rc-by">by Miro &middot; 1 week ago</div></div><button class="icon-btn rc-play" aria-label="Play remix"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5v14l11-7z"/></svg></button></div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-head"><h2>Comments</h2><span class="meta">3</span></div>
+          <div id="comments">
+            <div class="comment">
+              <div class="ca"><img src="https://i.pravatar.cc/80?img=12" alt=""></div>
+              <div class="ct"><span style="color:var(--faint)">@</span> <span class="at">0:14</span></div>
+              <div class="cbubble">Love what you did with the bassline here</div>
+              <div class="cacts"><button class="ib like" aria-label="Like comment"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2 4 4 0 017 2c0 5.5-7 10-7 10z"/></svg></button><button class="ib report" aria-label="Report comment"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg></button></div>
+            </div>
+            <div class="comment">
+              <div class="ca"><img src="https://i.pravatar.cc/80?img=32" alt=""></div>
+              <div class="ct"><span style="color:var(--faint)">@</span> <span class="at">1:48</span></div>
+              <div class="cbubble">That vocal chop in the drop is unreal. Mind if I flip it?</div>
+              <div class="cacts"><button class="ib like" aria-label="Like comment"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2 4 4 0 017 2c0 5.5-7 10-7 10z"/></svg></button><button class="ib report" aria-label="Report comment"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg></button></div>
+            </div>
+            <div class="comment">
+              <div class="ca"><img src="https://i.pravatar.cc/80?img=45" alt=""></div>
+              <div class="ct"><span style="color:var(--faint)">@</span> <span class="at">2:57</span></div>
+              <div class="cbubble">Mix sits so well. The low end is clean.</div>
+              <div class="cacts"><button class="ib like" aria-label="Like comment"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2 4 4 0 017 2c0 5.5-7 10-7 10z"/></svg></button><button class="ib report" aria-label="Report comment"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg></button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="side">
+        <div class="talent rcard" style="padding:0">
+          <div class="tv"><img src="https://picsum.photos/seed/leeptalent/480/270" alt=""></div>
+          <div class="tcap"><div class="h">Leep has talent.</div><p>This track was created using an audio sample from <b>HD&rsquo;s &ldquo;Jump&rdquo;</b>. Visit the <b>artist page</b>.</p></div>
+        </div>
+        <div class="rcard">
+          <h3>Inspired by the sound?</h3>
+          <p style="font-size:13px;color:var(--dim);line-height:1.55;margin-bottom:14px">Right-click and drag to highlight the section you would like to sample, download it, then upload the finished track when complete.</p>
+          <button class="btn" style="width:100%" onclick="document.getElementById('wave').scrollIntoView({behavior:'smooth',block:'center'})"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 15V3"/><path d="M7 8l5-5 5 5"/><path d="M5 21h14"/></svg>Upload my idea</button>
+        </div>
+        <div class="rcard">
+          <div class="rep"><div class="rl">Leep reputation</div><div class="big">88</div></div>
+          <div class="rep-sep"></div>
+          <div class="rep-bar" style="margin-top:0"><i></i></div>
+          <div class="rep-stats" style="margin-top:16px">
+            <div><div class="n">24</div><div class="l">Tracks</div></div>
+            <div><div class="n">18</div><div class="l">Remixed</div></div>
+            <div><div class="n">96%</div><div class="l">Would collab again</div></div>
+          </div>
+        </div>
+        <div class="rcard">
+          <h3>Track info</h3>
+          <div class="info-row"><span class="k">Genre</span><span class="v">House</span></div>
+          <div class="info-row"><span class="k">BPM</span><span class="v">124</span></div>
+          <div class="info-row"><span class="k">Key</span><span class="v">F minor</span></div>
+        </div>
+        <div class="rcard">
+          <h3>People to follow</h3>
+          <div class="person"><span class="pa">MK</span><div><div class="pn">Mika Kero</div><div class="pr">Producer</div></div><button class="pfollow" aria-label="Follow Mika Kero"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+          <div class="person"><span class="pa">SV</span><div><div class="pn">Sora Vale</div><div class="pr">Vocalist</div></div><button class="pfollow" aria-label="Follow Sora Vale"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+          <div class="person"><span class="pa">PR</span><div><div class="pn">Prenida V</div><div class="pr">Artist</div></div><button class="pfollow" aria-label="Follow Prenida V"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button></div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-in">
+    <div><h4>About</h4><a href="#">Team</a><a href="#">Our story</a><a href="#">Contact</a></div>
+    <div><h4>Features</h4><a href="#">Collaboration tools</a><a href="#">Remixing platform</a><a href="#">Stem sharing</a></div>
+    <div><h4>Resources</h4><a href="#">Blog</a><a href="#">Tutorials</a><a href="#">FAQ</a></div>
+    <div><h4>Legal</h4><a href="#">Terms of service</a><a href="#">Privacy policy</a><a href="#">Licensing</a></div>
+  </div>
+  <div class="foot-bottom">
+    <div><div class="fb-brand">Leep Audio</div><div style="margin-top:6px">The platform where artists collaborate, remix, and grow together.</div></div>
+    <div>&copy; 2026 Leep Audio. All rights reserved.</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span id="toastMsg"></span></div>
+
+<script src="./assets/js/peaks.js?v=10"></script>
+<script src="./assets/js/wav.js?v=10"></script>
+<script src="./assets/js/waveform.js?v=10"></script>
+<script src="./assets/js/player.js?v=10"></script>
+<script>
+(function(){
+  var P=window.LeepPlayer, fmt=window.LeepFmt;
+  var ICON_PLAY='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+  var ICON_PAUSE='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>';
+  
+
+  var selectMode=false;
+  new window.LeepWaveform(document.getElementById('wave'), {
+    peaks:(window.LEEP_PEAKS||{}).peaks||[], bare:true,
+    getState:P.getState,
+    onScrub:function(f){ P.seek(f); },
+    onTap:function(f){ P.seek(f); P.play(); },
+    onSelect:function(a,b){ P.setSelection(a,b); },
+    getSelectMode:function(){ return selectMode; }
+    
+  });
+
+  var hero=document.getElementById('hero');
+  var el={ play:document.getElementById('playBtn'), cur:document.getElementById('cur'), dur:document.getElementById('dur'),
+    heroSample:document.getElementById('heroSample'), selRange:document.getElementById('selRange'),
+    like:document.getElementById('likeBtn'), follow:document.getElementById('followBtn'),
+    followLbl:document.getElementById('followLbl'), vol:document.getElementById('vol'),
+    fbTime:document.getElementById('fbTime'), savedCount:document.getElementById('savedCount') };
+
+  P.on(function(s){
+    el.play.innerHTML=s.playing?ICON_PAUSE:ICON_PLAY; el.play.setAttribute('aria-label',s.playing?'Pause':'Play');
+    el.cur.textContent=fmt(s.time); el.dur.textContent=fmt(s.duration);
+    var hasSel=s.selA!=null&&s.selB!=null&&(s.selB-s.selA)>0.002;
+    el.heroSample.classList.toggle('show',hasSel);
+    if(hasSel && selectMode){ selectMode=false; var _sb=document.getElementById('selToggle'); if(_sb){ _sb.classList.remove('on'); _sb.setAttribute('aria-pressed','false'); } document.getElementById('wave').style.cursor='default'; }
+    hero.classList.toggle('has-sel',hasSel);
+    if(hasSel) el.selRange.textContent=fmt(s.selA*s.duration)+' \u2014 '+fmt(s.selB*s.duration);
+    el.like.classList.toggle('on',s.liked);
+    el.follow.classList.toggle('on',s.following);
+    el.followLbl.textContent=s.following?'Following':'Follow artist';
+    if(document.activeElement!==el.vol) el.vol.value=s.volume;
+    if(document.activeElement!==el.fbTime) el.fbTime.placeholder=fmt(s.time);
+    var n=s.savedSamples||0;
+    if(n>0){ el.savedCount.textContent=n; el.savedCount.style.display=''; } else { el.savedCount.style.display='none'; }
+  });
+
+  el.play.addEventListener('click',P.toggle);
+  el.like.addEventListener('click',P.toggleLike);
+  document.getElementById('followBtn').addEventListener('click',P.toggleFollow);
+  document.getElementById('previewBtn').addEventListener('click',P.previewSelection);
+  document.getElementById('downloadBtn').addEventListener('click',P.downloadSample);
+  document.getElementById('saveBtn').addEventListener('click',P.saveSample);
+  document.getElementById('clearBtn').addEventListener('click',P.clearSelection);
+  el.vol.addEventListener('input',function(){ P.setVolume(parseFloat(el.vol.value)); });
+  var selBtn=document.getElementById('selToggle'); if(selBtn){ selBtn.addEventListener('click',function(){ selectMode=!selectMode; selBtn.classList.toggle('on',selectMode); selBtn.setAttribute('aria-pressed',selectMode); document.getElementById('wave').style.cursor=selectMode?'crosshair':'default'; }); }
+  document.addEventListener('keydown',function(e){ var tn=e.target.tagName; if(e.code==='Space'&&tn!=='INPUT'&&tn!=='TEXTAREA'){ e.preventDefault(); P.toggle(); } });
+
+  
+  
+
+  function esc(s){ return s.replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  var comments=document.getElementById('comments');
+  var HEART='<svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2 4 4 0 017 2c0 5.5-7 10-7 10z"/></svg>';
+  var REPORT='<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>';
+  comments.addEventListener('click',function(e){
+    var like=e.target.closest('.ib.like'); if(like){ like.classList.toggle('liked'); return; }
+    var rep=e.target.closest('.ib.report'); if(rep){ document.dispatchEvent(new CustomEvent('leep:toast',{detail:'Comment reported'})); }
+  });
+
+  var fbText=document.getElementById('fbText'), fbErr=document.getElementById('fbErr');
+  document.getElementById('fbBtn').addEventListener('click',function(){
+    if(!fbText.value.trim()){ fbErr.textContent='Enter some feedback first'; fbText.focus(); return; }
+    fbErr.textContent='';
+    var row=document.createElement('div'); row.className='comment';
+    row.innerHTML='<div class="ca"><img src="https://i.pravatar.cc/80?img=5" alt=""></div>'
+      +'<div class="ct"><span style="color:var(--faint)">@</span> <span class="at">'+fmt(P.state.time)+'</span></div>'
+      +'<div class="cbubble">'+esc(fbText.value.trim())+'</div>'
+      +'<div class="cacts"><button class="ib like" aria-label="Like comment">'+HEART+'</button><button class="ib report" aria-label="Report comment">'+REPORT+'</button></div>';
+    comments.insertBefore(row, comments.firstChild);
+    fbText.value='';
+    document.dispatchEvent(new CustomEvent('leep:toast',{detail:'Comment posted'}));
+  });
+  fbText.addEventListener('input',function(){ if(fbText.value.trim()) fbErr.textContent=''; });
+
+  document.querySelectorAll('.pfollow').forEach(function(b){ b.addEventListener('click',function(){ b.classList.toggle('on'); }); });
+
+  var toast=document.getElementById('toast'), tmsg=document.getElementById('toastMsg'), tt;
+  document.addEventListener('leep:toast',function(e){ tmsg.textContent=e.detail; toast.classList.add('show'); clearTimeout(tt); tt=setTimeout(function(){ toast.classList.remove('show'); },2200); });
+
+  P.resume();
+})();
+</script>
+</body>
+</html>
+
+
+
+
+
