@@ -643,3 +643,7 @@ input[type=range].slider::-moz-range-thumb{width:14px;height:14px;border:none;bo
    content spreads edge-to-edge, avatar aligns with the nav; waveform full-bleed */
 .dock-body{max-width:none;margin:0;padding:10px 28px 12px}
 @media(max-width:620px){ .dock-body{padding:9px 15px 11px} }
+
+/* v16 — line the waveform up with the content column (avatar / controls) */
+.dock-wave{padding:0 28px}
+@media(max-width:620px){ .dock-wave{padding:0 15px} }

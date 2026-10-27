@@ -257,13 +257,27 @@ heights ≈ [4,10,14,6], width 2.6, in `teal`.
 
 ---
 
-## 6. Mini-player dock (persistent, on other pages — see `browse.html`)
-Fixed bottom bar, glass, top border `line-strong`, slides up (340ms). Grid:
-`[cover 42 + title/artist]` | `[42px play]` | `[compact waveform, size=mini]` |
-`[time (mono) · volume · like · expand]`. When a selection exists, a small floating
-toolbar sits above it: `Sample · {len}` + `Preview` + `Download` + `Expand to edit`
-(links back to the full page). No prev/next skip buttons. Mobile: reflows to two rows
-(identity+controls, then full-width waveform).
+## 6. Now-playing dock (persistent, on other pages -- see `browse.html`)
+A **full-width** fixed bottom bar (glass, top border `line-strong`, slides up 340ms),
+its content padded symmetrically (~28px, lining up with the nav). Three stacked parts:
+
+1. **Waveform** (top, `size=mini`, ~46px): spans the padded content width (lines up with
+   the avatar on the left and the controls on the right). Tap=play, drag=scrub,
+   right-drag/hold=select. A floating **selection toolbar** appears above the bar when a
+   region is selected: `Sample / {len}` + Save + Preview + Download + `Expand to edit`.
+2. **Controls row** -- left: **clickable avatar** (the profile link; on hover it shows a
+   teal ring + an open-link badge, which replaces any separate Profile link) / track
+   title (Fraunces) / artist + `ARTIST` badge / `[play]` / `{time}`. Right: volume / like /
+   **share** / expand / **Follow / Following** / **close (x)** -- the x is the OUTERMOST
+   item; it pauses and dismisses the dock.
+3. **Artist row** (left-justified under the avatar): a location pin + `{location}` /
+   `{n} followers` / genre chips / one-line **bio** (ellipsis; cap ~90 chars then
+   "...more").
+
+No prev/next skip buttons and **no metric tiles**. Variant: `selection = none / active`.
+Mobile: volume / time / expand / chips / bio drop away progressively; **Follow** becomes
+an icon-only `+` (teal when following); row 1 keeps avatar / title / play / like / share /
+close, row 2 keeps location / followers / Follow.
 
 ---
 
@@ -295,10 +309,14 @@ Build with **interactive components** (variant swaps on hover/press) + prototype
 | 9 | Hover a remix card | hover | card teal-ring flash + its marker dot scales + region highlights |
 | 10 | Like / Follow | click | toggle `active` variant (teal) |
 | 11 | Volume | drag thumb | fill width changes (annotate) |
-| 12 | Navigate away | click a nav/browse link | go to Discover frame; **mini-player dock** slides up and keeps state |
-| 13 | Expand (dock) | click expand/`Expand to edit` | return to the full track page |
+| 12 | Navigate away | click a nav/browse link | go to Discover frame; the **now-playing dock** slides up and keeps state |
+| 13 | Expand (dock) | click expand / `Expand to edit` | return to the full track page |
 | 14 | Idle → focus | hover the player (desktop) | waveform 20%→100%, cover blurs, controls 100% (`state` variant) |
 | 15 | Post comment | click `Comment` | prepend a Comment row `@ current-time` (validate non-empty) |
+| 16 | Open artist profile | click the dock **avatar** | go to the artist page (avatar hover = ring + open-link badge) |
+| 17 | Share | click **share** | native share sheet; falls back to copying the link (annotate) |
+| 18 | Close player | click the dock **x** | pause and slide the dock away |
+| 19 | Follow (dock) | click **Follow** | toggle Following (teal) |
 
 ---
 
@@ -336,3 +354,4 @@ Build with **interactive components** (variant swaps on hover/press) + prototype
 - [ ] Prototype wiring for interactions 1–15; live-only items annotated.
 
 _Reference build: `index.html`, `browse.html`, `assets/`, and `DESIGN-SYSTEM.md`._
+

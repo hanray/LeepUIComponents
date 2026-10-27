@@ -1,7 +1,7 @@
 ﻿# Leep Audio — Player & Waveform Design System
 
 A guide to recreate the Leep audio player and its signature **hybrid waveform**
-(measured strip + particle-field selection). Written so another agent can rebuild
+(measured strip + glowing teal selection + sampled-region markers). Written so another agent can rebuild
 the component from scratch and keep it on-brand.
 
 ---
@@ -81,13 +81,17 @@ Precision where you read; personality where you create.
 2. **Ticks**: one every 6px (full) / 4px (mini). Height = amplitude × (baseline − topPad).
    Color: `--text@55%` if before playhead (played), `--text@17%` if after (unplayed).
 3. **Grid**: 8 faint vertical guides (full view only).
-4. **Selection** `[a,b]` (fractions 0–1):
-   - Ticks inside the span are **replaced** by a particle field: per column, N dots
-     (N = round(amplitude × 9)), stacked from baseline up, green, with per-dot sine
-     jitter and twinkling alpha. Mini uses N × 6 and smaller radius.
-   - `--green-wash` fill behind it; solid `--green-line` edges.
-   - **Dimension bracket** across the top with the sample length in mono (full view).
-5. **Playhead**: 1px warm-white line + a 2.6px dot cap at the top.
+4. **Selection** `[a,b]` (fractions 0-1): the sample **lights up** -- a dark glass panel
+   isolates the span and the bars inside render in solid **teal** with a soft glow (plus
+   a few faint rising sparks), `--green-line` edges, and a **dimension bracket** above
+   with the sample length in mono (full view). (Earlier builds used an animated particle
+   field; it is now solid glowing bars, which also reads in Figma.)
+5. **Sampled-region markers** -- where OTHER artists have sampled the track: small colored
+   **dot** pins in a lane above the waveform at each sample's start (left = start/duration),
+   rendered as HTML so they stay full-opacity and auto-scale. Hover -> "Sampled by
+   {artist} / {track} / {range}" tooltip + that region tints; click -> jump to the remix
+   card. Bidirectional with the Inspired-remixes cards; crowded pins collapse to a "+N".
+6. **Playhead**: 1px warm-white line + a 2.6px dot cap at the top.
 
 ### Data
 Amplitude comes from **real peaks** decoded from the master, not random bars.
@@ -113,26 +117,32 @@ and via `ResizeObserver`.
 
 Two presentations share one controller and one renderer:
 
-- **Full view** (`.player` on the track page): mini cover + title/artist, like, time row,
-  waveform (112px), hint, selection toolbar (Clear / Preview / Download sample),
-  **centered transport** (restart · big green play · forward), and a bottom row with
-  volume (left) and follow (right).
-- **Mini view** (`.dock`, fixed bottom): cover + title/artist, transport, compact
-  waveform (46px), time, volume, like, expand. A floating `.dock-sel` toolbar appears
-  above the bar when a selection exists (Preview / Download / **Expand to edit**).
+- **Full view** (track page): the player sits **over the hero artwork** -- "NEW RELEASE"
+  + title, the waveform (~94px) with sampled-region dot markers, on-image controls
+  (play / time / volume / follow / like), and the **selection modal** (Leep logo / close /
+  Save / Preview / Download) centered on the art when a region is selected. Idle the
+  waveform sits at 20%; on hover it goes full and the artwork blurs to focus the controls.
+- **Mini view / now-playing dock** (`.dock`, fixed bottom, full-width, slides up): a
+  full-width-aligned waveform (~46px) over two rows. Row 1 -- clickable **avatar**
+  (profile link) / title+artist + `ARTIST` badge / play / time / volume / like / share /
+  expand / **Follow** / **close (x)** (pauses + dismisses). Row 2 -- location / followers /
+  genre chips / one-line bio. A floating `.dock-sel` toolbar (Save / Preview / Download /
+  Expand to edit) appears when a selection exists. No metric tiles.
 
 ### What stays available in the mini-player
-Play/pause, restart/forward, scrub, **select and download a sample**, volume, like,
-and expand. Precise handle-dragging and the full sample toolbar live in the expanded
-(full) view — "Expand to edit" deep-links back to it with the selection intact.
+Play/pause, scrub, **select / save / download a sample**, volume, like, **follow**,
+**share**, open the artist profile (avatar), and **close** (dismiss). Precise handle work
+lives in the expanded view -- "Expand to edit" deep-links back with the selection intact.
 
 ### Controller (`assets/js/player.js` → `window.LeepPlayer`)
 Single detached `Audio` element + state persisted to `localStorage` (`leep.player.v1`),
-so the mini-player resumes position, selection, volume, like, and follow across pages.
+so the mini-player resumes position, selection, volume, like, follow, and saved-samples count across pages.
 
 API: `on(fn)`, `play/pause/toggle`, `seek(frac)`, `setVolume(v)`,
 `setSelection(a,b)`, `clearSelection()`, `toggleLike()`, `toggleFollow()`,
-`previewSelection()` (plays only `[a,b]`), `downloadSample()`, `getState()`, `resume()`.
+`saveSample()` (bumps the "Saved samples" count), `shareTrack()`, `previewSelection()`
+(plays only `[a,b]`), `downloadSample()`, `getState()`, `resume()`. Audio loads into an
+in-memory **blob URL** so seeking works on any static host (no HTTP Range needed).
 
 `getState()` returns `{progress, selA, selB, duration, playing}` — the only thing the
 waveform needs. UI subscribes via `on()` and re-renders on every state change.
@@ -187,4 +197,5 @@ leep-audio-player/
   full-width waveform).
 - Text never relies on color alone; selection is shown by particles + brackets + fill.
 - `prefers-reduced-motion` disables all transitions/animation.
+
 
