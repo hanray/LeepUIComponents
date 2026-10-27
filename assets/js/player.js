@@ -79,6 +79,13 @@ window.LeepPlayer = (function(){
     save(); emit(); toast('Saved to your samples');
   }
 
+  function shareTrack(){
+    var data={ title:'House Baby \u2014 Grugz', text:'House Baby by Grugz on Leep', url:location.href };
+    if(navigator.share){ navigator.share(data).catch(function(){}); }
+    else if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(data.url).then(function(){ toast('Link copied'); }).catch(function(){ toast('Copy failed'); }); }
+    else { toast('Share this track'); }
+  }
+
   function previewSelection(){
     if(state.selA==null || state.selB==null) return;
     ensureAudio();
@@ -126,6 +133,7 @@ window.LeepPlayer = (function(){
 
   return { state:state, on:on, play:play, pause:pause, toggle:toggle, seek:seek,
            setVolume:setVolume, setSelection:setSelection, clearSelection:clearSelection,
-           toggleLike:toggleLike, toggleFollow:toggleFollow, saveSample:saveSample, previewSelection:previewSelection,
+           toggleLike:toggleLike, toggleFollow:toggleFollow, saveSample:saveSample, shareTrack:shareTrack, previewSelection:previewSelection,
            downloadSample:downloadSample, getState:getState, resume:resume, save:save };
 })();
+

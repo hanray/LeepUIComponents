@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./assets/css/leep.css?v=10">
+<link rel="stylesheet" href="./assets/css/leep.css?v=12">
 </head>
 <body>
 <header class="nav">
@@ -70,7 +70,7 @@
         </div>
       </div>
 
-      <div class="hero-wave"><canvas id="wave" aria-label="Waveform — click to play from here, left-drag to scrub, right-click-drag to select"></canvas></div>
+      <div class="hero-wave"><div class="wf-markers" id="wfMarkers"></div><canvas id="wave" aria-label="Waveform — click to play from here, left-drag to scrub, right-click-drag to select"></canvas></div>
 
       <div class="hero-controls">
         <div class="hl">
@@ -120,8 +120,8 @@
         <div class="section">
           <div class="section-head"><h2>Inspired remixes</h2><span class="meta">02 tracks</span></div>
           <div class="remix">
-            <div class="remix-card"><div class="rc-cover">01</div><div><div class="rc-uses">USES 1:16 – 1:52</div><div class="rc-t">Half Light</div><div class="rc-by">by Lia North &middot; 3 days ago</div></div><button class="icon-btn rc-play" aria-label="Play remix"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5v14l11-7z"/></svg></button></div>
-            <div class="remix-card"><div class="rc-cover">02</div><div><div class="rc-uses">USES 2:40 – 3:01</div><div class="rc-t">Nocturne FM</div><div class="rc-by">by Miro &middot; 1 week ago</div></div><button class="icon-btn rc-play" aria-label="Play remix"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5v14l11-7z"/></svg></button></div>
+            <div class="remix-card" data-rgn="0"><div class="rc-cover">01</div><div><div class="rc-uses"><span class="rc-sw" style="background:#A796E8"></span>USES 0:36 &mdash; 1:02</div><div class="rc-t">Half Light</div><div class="rc-by">by Lia North &middot; 3 days ago</div></div><button class="icon-btn rc-play" aria-label="Play remix"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5v14l11-7z"/></svg></button></div>
+            <div class="remix-card" data-rgn="1"><div class="rc-cover">02</div><div><div class="rc-uses"><span class="rc-sw" style="background:#E0A95C"></span>USES 1:48 &mdash; 2:07</div><div class="rc-t">Nocturne FM</div><div class="rc-by">by Miro &middot; 1 week ago</div></div><button class="icon-btn rc-play" aria-label="Play remix"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5v14l11-7z"/></svg></button></div>
           </div>
         </div>
 
@@ -200,12 +200,13 @@
   </div>
 </footer>
 
+<div class="wf-tip" id="wfTip"><span class="sw"></span><div><div class="ta"></div><div class="tt"></div></div></div>
 <div class="toast" id="toast"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span id="toastMsg"></span></div>
 
-<script src="./assets/js/peaks.js?v=10"></script>
-<script src="./assets/js/wav.js?v=10"></script>
-<script src="./assets/js/waveform.js?v=10"></script>
-<script src="./assets/js/player.js?v=10"></script>
+<script src="./assets/js/peaks.js?v=12"></script>
+<script src="./assets/js/wav.js?v=12"></script>
+<script src="./assets/js/waveform.js?v=12"></script>
+<script src="./assets/js/player.js?v=12"></script>
 <script>
 (function(){
   var P=window.LeepPlayer, fmt=window.LeepFmt;
@@ -214,7 +215,12 @@
   
 
   var selectMode=false;
-  new window.LeepWaveform(document.getElementById('wave'), {
+  var D=(window.LEEP_PEAKS||{}).dur||204;
+  var REGIONS=[{artist:'Lia North',track:'Half Light',a:36/D,b:62/D,color:'#A796E8'},{artist:'Miro',track:'Nocturne FM',a:108/D,b:127/D,color:'#E0A95C'}];
+  var tip=document.getElementById('wfTip'), tSw=tip.querySelector('.sw'), tA=tip.querySelector('.ta'), tT=tip.querySelector('.tt');
+  function showTip(r,dot){ tSw.style.background=r.color; tA.textContent='Sampled by '+r.artist; tT.textContent=r.track+' \u00b7 '+fmt(r.a*D)+'\u2013'+fmt(r.b*D); tip.classList.add('show'); var rc=dot.getBoundingClientRect(), tw=tip.offsetWidth, th=tip.offsetHeight; tip.style.left=Math.min(window.innerWidth-tw-10,Math.max(10,rc.left+rc.width/2-tw/2))+'px'; tip.style.top=Math.max(10,rc.top-th-9)+'px'; }
+  function hideTip(){ tip.classList.remove('show'); }
+  var wave=new window.LeepWaveform(document.getElementById('wave'), {
     peaks:(window.LEEP_PEAKS||{}).peaks||[], bare:true,
     getState:P.getState,
     onScrub:function(f){ P.seek(f); },
@@ -288,6 +294,20 @@
 
   document.querySelectorAll('.pfollow').forEach(function(b){ b.addEventListener('click',function(){ b.classList.toggle('on'); }); });
 
+  var markerEls=[], mk=document.getElementById('wfMarkers');
+  REGIONS.forEach(function(r,idx){
+    var d=document.createElement('button'); d.className='wf-marker'; d.style.left=(r.a*100)+'%'; d.style.setProperty('--mc', r.color);
+    d.setAttribute('aria-label','Sampled by '+r.artist+' \u2014 '+r.track);
+    function enter(){ wave.setHover(r); d.classList.add('on'); showTip(r,d); }
+    function leave(){ wave.setHover(null); d.classList.remove('on'); hideTip(); }
+    d.addEventListener('mouseenter',enter); d.addEventListener('mouseleave',leave);
+    d.addEventListener('focus',enter); d.addEventListener('blur',leave);
+    d.addEventListener('click',function(){ var card=document.querySelector('.remix-card[data-rgn="'+idx+'"]'); if(card){ card.scrollIntoView({behavior:'smooth',block:'center'}); card.classList.add('flash'); setTimeout(function(){ card.classList.remove('flash'); },1300); } });
+    mk.appendChild(d); markerEls.push(d);
+  });
+  document.querySelectorAll('.remix-card[data-rgn]').forEach(function(card){ var idx=+card.getAttribute('data-rgn'), r=REGIONS[idx];
+    card.addEventListener('mouseenter',function(){ wave.setHover(r); if(markerEls[idx]) markerEls[idx].classList.add('on'); });
+    card.addEventListener('mouseleave',function(){ wave.setHover(null); if(markerEls[idx]) markerEls[idx].classList.remove('on'); }); });
   var toast=document.getElementById('toast'), tmsg=document.getElementById('toastMsg'), tt;
   document.addEventListener('leep:toast',function(e){ tmsg.textContent=e.detail; toast.classList.add('show'); clearTimeout(tt); tt=setTimeout(function(){ toast.classList.remove('show'); },2200); });
 
@@ -296,6 +316,8 @@
 </script>
 </body>
 </html>
+
+
 
 
 

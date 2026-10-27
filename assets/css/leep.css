@@ -522,3 +522,124 @@ input[type=range].slider::-moz-range-thumb{width:14px;height:14px;border:none;bo
   .credits{font-size:11px}
   .hint-row{align-items:flex-start}
 }
+
+/* ============================================================
+   v9 — remix regions: "sampled by" hover tooltip + card swatch
+   ============================================================ */
+.wf-tip{position:fixed;z-index:60;display:flex;align-items:center;gap:11px;background:rgba(14,16,19,0.96);backdrop-filter:blur(10px);border:1px solid var(--line-strong);border-radius:11px;padding:10px 13px;pointer-events:none;opacity:0;transform:translateY(5px);transition:opacity .15s var(--ease),transform .15s var(--ease);box-shadow:0 12px 34px rgba(0,0,0,.5);white-space:nowrap}
+.wf-tip.show{opacity:1;transform:none}
+.wf-tip .sw{width:13px;height:13px;border-radius:4px;flex:none}
+.wf-tip .ta{font-family:var(--serif);font-size:13.5px;font-weight:500}
+.wf-tip .tt{font-size:12px;color:var(--dim);margin-top:1px}
+.rc-sw{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:7px;vertical-align:middle}
+
+/* ============================================================
+   v10 — sampled-region marker dots (scalable; replaces bands)
+   ============================================================ */
+.wf-markers{position:absolute;top:-5px;left:0;right:0;height:16px;z-index:4;pointer-events:none}
+.wf-marker{position:absolute;top:0;transform:translateX(-50%);width:16px;height:16px;padding:0;margin:0;border:0;background:none;cursor:pointer;pointer-events:auto}
+.wf-marker::before{content:"";position:absolute;top:3px;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:var(--mc,#A796E8);box-shadow:0 0 0 3px rgba(10,10,11,.65),0 0 7px var(--mc,#A796E8);transition:transform .15s var(--ease)}
+.wf-marker:hover::before,.wf-marker.on::before,.wf-marker:focus-visible::before{transform:translateX(-50%) scale(1.4)}
+.remix-card.flash{border-color:var(--green-line);box-shadow:0 0 0 1px var(--green-line)}
+
+/* ============================================================
+   v11 — now-playing dock: artist context, clickable avatar, share, close
+   ============================================================ */
+.dock-wave{width:100%;padding:0}
+.dock-wave canvas{width:100%;height:30px;border-radius:0;background:transparent;cursor:crosshair;touch-action:none}
+.dock-body{max-width:1300px;margin:0 auto;padding:9px 24px 11px;display:flex;flex-direction:column;gap:8px}
+.dock-top{display:flex;align-items:center;gap:15px}
+.dock-avatar{position:relative;width:46px;height:46px;flex:none;display:block;cursor:pointer}
+.dock-avatar img{width:46px;height:46px;border-radius:50%;object-fit:cover;display:block;border:1px solid var(--line-strong);transition:transform .15s var(--ease)}
+.dock-avatar:hover img{transform:scale(1.05)}
+.dock-avatar .dp-ring{position:absolute;inset:-3px;border-radius:50%;border:2px solid var(--green);opacity:0;transition:opacity .15s var(--ease);pointer-events:none}
+.dock-avatar:hover .dp-ring,.dock-avatar:focus-visible .dp-ring{opacity:1}
+.dock-avatar .dp-go{position:absolute;right:-2px;bottom:-2px;width:18px;height:18px;border-radius:50%;background:var(--green);color:var(--green-ink);display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.6);transition:opacity .15s var(--ease),transform .15s var(--ease)}
+.dock-avatar:hover .dp-go,.dock-avatar:focus-visible .dp-go{opacity:1;transform:scale(1)}
+.dock-avatar .dp-go svg{width:10px;height:10px;stroke:currentColor;fill:none;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.dock .dock-id{min-width:0}
+.dock .dock-id .t{font-family:var(--serif);font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dock .dock-id .a{font-size:12px;color:var(--dim);display:flex;align-items:center;gap:8px;margin-top:1px}
+.artist-badge{font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--green);border:1px solid var(--green-line);border-radius:20px;padding:2px 7px}
+.dock-top .dock-transport{margin-left:6px;display:flex}
+.dock .play-big{width:40px;height:40px;box-shadow:none}
+.dock .play-big svg{width:16px;height:16px}
+.dock-time{font-family:var(--mono);font-size:12px;color:var(--dim);white-space:nowrap}
+.dock-actions{margin-left:auto;display:flex;align-items:center;gap:8px}
+.dock-actions .vol{display:flex;align-items:center;gap:8px;color:var(--dim)}
+.dock-actions .vol svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6}
+.dock-actions .icon-btn{width:34px;height:34px}
+.dock-actions .icon-btn svg{width:16px;height:16px}
+.dock-close:hover{color:#F0999B;border-color:rgba(240,153,155,.5)}
+
+.dock-meta-row{display:flex;align-items:center;gap:16px;padding-left:61px}
+.dock-meta{display:flex;align-items:center;gap:11px;min-width:0;color:var(--dim);font-size:12.5px;overflow:hidden}
+.dock-meta .mi{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.dock-meta .mi svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6;flex:none}
+.dock-meta .mdot{color:var(--faint)}
+.dock-meta .chips{display:flex;gap:6px;flex:none}
+.gchip{font-size:10px;letter-spacing:.03em;color:var(--dim);border:1px solid var(--line);border-radius:20px;padding:2px 9px;white-space:nowrap}
+.dock-bio{color:var(--faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.dock-meta-row .follow{margin-left:auto;flex:none;white-space:nowrap}
+
+@media(max-width:860px){ .dock-bio{display:none} .dock-actions .vol{display:none} }
+@media(max-width:620px){
+  .dock-body{padding:8px 15px 10px;gap:7px}
+  .dock-top{gap:11px}
+  .dock-time,.dock-expand,.dock-meta .chips{display:none}
+  .dock-meta-row{padding-left:0}
+  .dock-actions{gap:5px}
+  .dock-actions .icon-btn{width:32px;height:32px}
+}
+
+/* v11.1 — dock mobile fit: let the title flex, tighten controls */
+@media(max-width:620px){
+  .dock-top{gap:9px}
+  .dock-id{flex:1 1 auto;min-width:0}
+  .dock-avatar,.dock-avatar img{width:40px;height:40px}
+  .dock-id .a .artist-badge{display:none}
+  .dock .play-big{width:36px;height:36px}
+  .dock-actions{gap:3px}
+  .dock-actions .icon-btn{width:30px;height:30px}
+  .dock-meta .mdot:last-of-type{display:none}
+}
+
+/* v12 — align dock to the feed's 1100 column; restore waveform height */
+.dock-wave{max-width:1100px;margin:0 auto;padding:0 28px}
+.dock-wave canvas{height:46px}
+.dock-body{max-width:1100px;padding:10px 28px 12px}
+@media(max-width:620px){
+  .dock-wave{padding:0 15px}
+  .dock-wave canvas{height:38px}
+  .dock-body{padding:9px 15px 11px}
+}
+
+/* v13 — left-justify browse content + dock (align to the nav's left edge) */
+.feed-head{margin-left:0;margin-right:auto}
+.feed{margin-left:0;margin-right:auto}
+.dock-body{margin-left:0;margin-right:auto}
+.dock-wave{margin-left:0;margin-right:auto}
+
+/* v13 — left-justify artist row; Follow moves onto the controls row (x outermost) */
+.dock-meta-row{padding-left:0}
+.dock-actions .follow{margin-left:6px;white-space:nowrap}
+@media(max-width:620px){
+  .dock-actions .follow{width:30px;height:30px;padding:0;border-radius:50%;margin-left:3px}
+  .dock-actions .follow span{display:none}
+}
+
+/* v14 — restore the player's own wider centered band + full-bleed waveform
+   (undo the 1100 feed-alignment; keep the taller waveform) */
+.dock-wave{max-width:none;margin:0;padding:0}
+.dock-wave canvas{height:46px}
+.dock-body{max-width:1300px;padding:10px 24px 12px}
+@media(max-width:620px){
+  .dock-wave{padding:0}
+  .dock-wave canvas{height:40px}
+  .dock-body{padding:9px 15px 11px}
+}
+
+/* v15 — player spans full width with symmetric padding (not a centered band);
+   content spreads edge-to-edge, avatar aligns with the nav; waveform full-bleed */
+.dock-body{max-width:none;margin:0;padding:10px 28px 12px}
+@media(max-width:620px){ .dock-body{padding:9px 15px 11px} }
