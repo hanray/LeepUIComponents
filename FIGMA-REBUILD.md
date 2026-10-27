@@ -281,19 +281,36 @@ genres, bio, and follow all live here so the bar stays uncluttered. Build it as 
 component shown on avatar hover; on touch there is no hover, so the avatar tap just opens
 the profile page.
 
-Variant: `selection = none / active`. Mobile: the row wraps -- avatar / title / play /
-(like, share, close) on line 1, the waveform full-width on line 2; time + volume drop
-away; the hover card is desktop-only.
+Variant: `selection = none / active`. **Mobile (≤720px):** the row wraps -- avatar +
+title + play on line 1, the (like / share / close) actions wrap to line 2, and the
+waveform spans full-width on line 3; time + volume drop away; the hover card is
+desktop-only (on touch the avatar tap just opens the profile). Build this as the
+`device = mobile` variant of the dock.
 
 ---
 
 ## 7. Responsive / mobile variant (`device = mobile`, ~375 wide)
+Design **two frames**: desktop ~1300 and mobile ~375. The CSS cutoffs, so an agent can
+place intermediate (tablet) states if desired:
+
+| Breakpoint | What changes |
+|---|---|
+| `≤1080` | hide the **left rail**; main full-width |
+| `≤900` | below-grid stacks to one column; side cards reflow to auto-fit |
+| `≤860` | hide the **right/side rail** + nav **center links**; remixes 1-col |
+| `≤720` | nav padding tightens; **dock wraps** (§6) |
+| `≤620` | hero **control bar wraps** (play/time/volume, then follow/like) |
+| `≤600` | hide the nav **search** |
+| `≤480` | footer collapses to one column |
+
+Mobile frame (~375) specifics:
 - Nav: hide center links and the **search**; keep logo + `142 CR` + avatar.
 - Hero: taller aspect (~16:13) so the overlaid title/wave/controls fit; control bar wraps
   (play/time/volume on one row, follow/like on the next). Waveform always 100% (no hover).
 - The hint becomes "**Tap "Select sample", then drag across the waveform**" and a
   **Select sample** button appears (touch-only). Below grid stacks to one column.
 - Selection modal + dots + tooltip behave the same (modal fits 375).
+- Dock: wraps to the stacked layout in §6.
 
 ---
 
@@ -357,7 +374,8 @@ Build with **interactive components** (variant swaps on hover/press) + prototype
 - [ ] Marker dots (scalable) + sampled-by tooltip + region highlight; bidirectional with remix cards.
 - [ ] Full track page assembled (nav, breadcrumb, hero player, feedback, comments, stems, remixes, side rail, footer).
 - [ ] Mini-player dock + Discover page, with slide-in and state carry.
-- [ ] Mobile variant (search hidden, taller hero, Select button, stacked below-grid).
+- [ ] Mobile frame ~375 (search hidden, taller hero, Select button, stacked below-grid,
+      wrapped dock) built from the §7 breakpoints — both desktop and mobile frames delivered.
 - [ ] Prototype wiring for interactions 1–15; live-only items annotated.
 
 _Reference build: `index.html`, `browse.html`, `assets/`, and `DESIGN-SYSTEM.md`._

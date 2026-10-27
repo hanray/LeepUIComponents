@@ -48,8 +48,12 @@ use `--green-ink`.
 
 ### Type
 - **Display / headings:** Fraunces (variable serif), weight 500, `letter-spacing:-0.01em`.
-- **UI / body:** Inter, weights 400/500.
-- **Data / time / ASCII:** JetBrains Mono.
+- **UI / body:** Geist, weights 400/500/600.
+- **Data / time / numeric:** Geist Mono.
+
+All three load from Google Fonts. (The CSS `--sans` / `--mono` tokens are first
+declared as Inter / JetBrains Mono and then **overridden to Geist / Geist Mono** in a
+later block — Geist is what renders; use Geist.)
 
 Scale: h1 26px, section h2 24px, card h3 18px, body 15px, label 11px uppercase
 `letter-spacing:0.2em`, time/mono 12px. Minimum rendered text 11px.
@@ -64,8 +68,19 @@ Scale: h1 26px, section h2 24px, card h3 18px, body 15px, label 11px uppercase
 
 ### Layout
 - Radius: controls 8px, cards 12–16px, pills 20px. Icon buttons are circles.
-- Grid: `200px | 1fr | 300px` (nav rail / content / info rail). Collapses the left
-  rail < 1080px, right rail < 860px, single column < 860px.
+- **Track page** is a 2-column grid: **left rail ~190px | main 1fr** (gap 36, max-width
+  ~1300, padding 30×28). The info/side rail (~300px) is **not** a third top-level column —
+  it lives inside a nested **below grid** under the player: `main 1fr | side 300` (gap 40).
+- **Responsive breakpoints** (desktop → mobile):
+  - `≤1080px` — hide the **left rail**; main goes full-width.
+  - `≤900px` — the **below grid** stacks to one column; the side rail reflows to
+    auto-fit cards.
+  - `≤860px` — hide the **right/side rail** and the **nav center links**; remixes 1-col.
+  - `≤720px` — tighten nav padding; the **dock** wraps (see §6).
+  - `≤620px` — the hero **control bar wraps** (play/time/volume, then follow/like).
+  - `≤600px` — hide the nav **search**.
+  - `≤480px` — footer collapses to one column.
+  - Design the two Figma frames at **~1300** (desktop) and **~375** (mobile).
 
 ---
 
@@ -194,8 +209,9 @@ leep-audio-player/
 ## 6. Accessibility & responsive notes
 - Every control has an `aria-label`; the canvas is labelled as draggable-to-select.
 - Focus-visible rings on buttons (2px green, offset from bg).
-- Touch targets ≥ 34px; dock reflows to two rows under 720px (id + controls, then
-  full-width waveform).
+- Touch targets ≥ 34px. The dock wraps under 720px: avatar + title + play on the first
+  line, the like/share/close actions wrap to a second line, and the waveform spans
+  full-width below (time + volume drop away). The artist hover card is desktop-only.
 - Text never relies on color alone; selection is shown by particles + brackets + fill.
 - `prefers-reduced-motion` disables all transitions/animation.
 
