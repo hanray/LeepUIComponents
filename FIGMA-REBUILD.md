@@ -258,26 +258,32 @@ heights ≈ [4,10,14,6], width 2.6, in `teal`.
 ---
 
 ## 6. Now-playing dock (persistent, on other pages -- see `browse.html`)
-A **full-width** fixed bottom bar (glass, top border `line-strong`, slides up 340ms),
-its content padded symmetrically (~28px, lining up with the nav). Three stacked parts:
+A clean **single-row** full-width fixed bottom bar (glass, top border `line-strong`,
+slides up 340ms), padded symmetrically (~28px, lines up with the nav). Left -> right:
 
-1. **Waveform** (top, `size=mini`, ~46px): spans the padded content width (lines up with
-   the avatar on the left and the controls on the right). Tap=play, drag=scrub,
-   right-drag/hold=select. A floating **selection toolbar** appears above the bar when a
-   region is selected: `Sample / {len}` + Save + Preview + Download + `Expand to edit`.
-2. **Controls row** -- left: **clickable avatar** (the profile link; on hover it shows a
-   teal ring + an open-link badge, which replaces any separate Profile link) / track
-   title (Fraunces) / artist + `ARTIST` badge / `[play]` / `{time}`. Right: volume / like /
-   **share** / expand / **Follow / Following** / **close (x)** -- the x is the OUTERMOST
-   item; it pauses and dismisses the dock.
-3. **Artist row** (left-justified under the avatar): a location pin + `{location}` /
-   `{n} followers` / genre chips / one-line **bio** (ellipsis; cap ~90 chars then
-   "...more").
+- **Avatar** (round artist DP, ~46px) -- the profile link. Hover/focus shows a teal ring +
+  an open-link badge AND opens the **artist hover card** (below).
+- **Track title** (Fraunces, ~18px) over **artist** (~13px).
+- `[play]` (teal, ~44px).
+- **Waveform** (`size=mini`, ~42px): inline, flex-fills the middle, in a bordered rounded
+  box (`surface-2`, 1px `line`). Tap=play, drag=scrub, right-drag/hold=select. A floating
+  **selection toolbar** appears above the bar when a region is selected: `Sample / {len}`
+  + Save + Preview + Download + `Expand to edit`.
+- Right group: `{time}` (mono) / volume / like / **share** / expand / **close (x)** (x is
+  the outermost item; pauses + dismisses the dock).
 
-No prev/next skip buttons and **no metric tiles**. Variant: `selection = none / active`.
-Mobile: volume / time / expand / chips / bio drop away progressively; **Follow** becomes
-an icon-only `+` (teal when following); row 1 keeps avatar / title / play / like / share /
-close, row 2 keeps location / followers / Follow.
+No prev/next skip buttons, no metric tiles, no second row.
+
+**Artist hover card** (opens upward from the avatar; ~276px, glass, radius 14): artist
+name + `ARTIST` badge / a pin + `{location}` `{n} followers` / genre chips / one-line
+**bio** / a full-width **Follow / Following** button. The follower count, location,
+genres, bio, and follow all live here so the bar stays uncluttered. Build it as a
+component shown on avatar hover; on touch there is no hover, so the avatar tap just opens
+the profile page.
+
+Variant: `selection = none / active`. Mobile: the row wraps -- avatar / title / play /
+(like, share, close) on line 1, the waveform full-width on line 2; time + volume drop
+away; the hover card is desktop-only.
 
 ---
 
@@ -313,10 +319,11 @@ Build with **interactive components** (variant swaps on hover/press) + prototype
 | 13 | Expand (dock) | click expand / `Expand to edit` | return to the full track page |
 | 14 | Idle → focus | hover the player (desktop) | waveform 20%→100%, cover blurs, controls 100% (`state` variant) |
 | 15 | Post comment | click `Comment` | prepend a Comment row `@ current-time` (validate non-empty) |
-| 16 | Open artist profile | click the dock **avatar** | go to the artist page (avatar hover = ring + open-link badge) |
-| 17 | Share | click **share** | native share sheet; falls back to copying the link (annotate) |
-| 18 | Close player | click the dock **x** | pause and slide the dock away |
-| 19 | Follow (dock) | click **Follow** | toggle Following (teal) |
+| 16 | Open artist profile | click the dock **avatar** | go to the artist page (avatar also shows ring + open-link badge on hover) |
+| 17 | Artist card | hover / focus the dock **avatar** | reveal the **artist hover card** (followers, location, genres, bio, Follow) -- fade/rise |
+| 18 | Share | click **share** | native share sheet; falls back to copying the link (annotate) |
+| 19 | Close player | click the dock **x** | pause and slide the dock away |
+| 20 | Follow | click **Follow** (in the artist card) | toggle Following (teal) |
 
 ---
 
@@ -354,4 +361,5 @@ Build with **interactive components** (variant swaps on hover/press) + prototype
 - [ ] Prototype wiring for interactions 1–15; live-only items annotated.
 
 _Reference build: `index.html`, `browse.html`, `assets/`, and `DESIGN-SYSTEM.md`._
+
 

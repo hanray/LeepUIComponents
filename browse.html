@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./assets/css/leep.css?v=19">
+<link rel="stylesheet" href="./assets/css/leep.css?v=20">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -51,7 +51,7 @@
 
 <div class="feed" id="feed"></div>
 
-<!-- NOW-PLAYING DOCK -->
+<!-- NOW-PLAYING DOCK (single row; artist info lives in the avatar hover card) -->
 <div class="dock" id="dock">
   <div class="dock-sel" id="dockSel">
     <span class="m">Sample &middot; <b id="dSelLen">0:00</b></span>
@@ -60,49 +60,48 @@
     <a class="btn ghost" href="./index.html" title="Open full player for precise handles">Expand to edit</a>
   </div>
 
-  <div class="dock-wave"><canvas id="dwave" aria-label="Waveform — tap to play, drag to scrub"></canvas></div>
-
-  <div class="dock-body">
-    <div class="dock-top">
+  <div class="dock-row">
+    <div class="dock-artist">
       <a class="dock-avatar" href="./index.html" aria-label="View Grugz&rsquo;s profile" title="View Grugz&rsquo;s profile">
         <img src="https://i.pravatar.cc/120?img=13" alt="Grugz">
         <span class="dp-ring"></span>
         <span class="dp-go"><svg viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
       </a>
-      <div class="dock-id">
-        <div class="t">House Baby</div>
-        <div class="a">Grugz <span class="artist-badge">Artist</span></div>
-      </div>
-      <div class="dock-transport"><button class="play-big" id="dPlay" aria-label="Play"></button></div>
-      <span class="dock-time"><span id="dCur">0:00</span> / <span id="dDur">3:24</span></span>
-      <div class="dock-actions">
-        <div class="vol"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a3 3 0 010 6"/></svg><input type="range" class="slider" id="dVol" min="0" max="1" step="0.01" value="0.8" style="width:70px" aria-label="Volume"></div>
-        <button class="icon-btn" id="dLike" aria-label="Like"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2 4 4 0 017 2c0 5.5-7 10-7 10z"/></svg></button>
-        <button class="icon-btn" id="dShare" aria-label="Share"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
-        <a class="icon-btn dock-expand" href="./index.html" aria-label="Expand player" title="Expand"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></a>
-        <button class="btn follow" id="dFollow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span id="dFollowLbl">Follow</span></button><button class="icon-btn dock-close" id="dClose" aria-label="Close player" title="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div class="artist-pop" role="tooltip">
+        <div class="ap-name">Grugz <span class="artist-badge">Artist</span></div>
+        <div class="ap-meta"><span class="mi"><svg viewBox="0 0 24 24"><path d="M12 21s-6-5.3-6-10a6 6 0 1112 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2" fill="currentColor" stroke="none"/></svg>France</span><span class="mdot">&middot;</span><span>3 followers</span></div>
+        <div class="ap-chips"><span class="gchip">House</span><span class="gchip">Electronic</span><span class="gchip">Dance</span></div>
+        <p class="ap-bio">Five friends turning late-night sessions into house records.</p>
+        <button class="btn follow" id="dFollow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg><span id="dFollowLbl">Follow artist</span></button>
       </div>
     </div>
-    <div class="dock-meta-row">
-      <div class="dock-meta">
-        <span class="mi"><svg viewBox="0 0 24 24"><path d="M12 21s-6-5.3-6-10a6 6 0 1112 0c0 4.7-6 10-6 10z"/><circle cx="12" cy="11" r="2" fill="currentColor" stroke="none"/></svg>France</span>
-        <span class="mdot">&middot;</span>
-        <span class="mi">3 followers</span>
-        <span class="mdot">&middot;</span>
-        <span class="chips"><span class="gchip">House</span><span class="gchip">Electronic</span><span class="gchip">Dance</span></span>
-        <span class="dock-bio">Five friends turning late-night sessions into house records.</span>
-      </div>
-      
+
+    <div class="dock-id">
+      <div class="t">House Baby</div>
+      <div class="a">Grugz</div>
+    </div>
+
+    <div class="dock-transport"><button class="play-big" id="dPlay" aria-label="Play"></button></div>
+
+    <div class="dock-wave"><canvas id="dwave" aria-label="Waveform — tap to play, drag to scrub"></canvas></div>
+
+    <div class="dock-right">
+      <span class="dock-time"><span id="dCur">0:00</span> / <span id="dDur">3:24</span></span>
+      <div class="vol"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a3 3 0 010 6"/></svg><input type="range" class="slider" id="dVol" min="0" max="1" step="0.01" value="0.8" style="width:70px" aria-label="Volume"></div>
+      <button class="icon-btn" id="dLike" aria-label="Like"><svg viewBox="0 0 24 24"><path d="M12 20s-7-4.5-7-10a4 4 0 017-2 4 4 0 017 2c0 5.5-7 10-7 10z"/></svg></button>
+      <button class="icon-btn" id="dShare" aria-label="Share"><svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
+      <a class="icon-btn dock-expand" href="./index.html" aria-label="Expand player" title="Expand"><svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></a>
+      <button class="icon-btn dock-close" id="dClose" aria-label="Close player" title="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     </div>
   </div>
 </div>
 
 <div class="toast" id="toast"><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg><span id="toastMsg"></span></div>
 
-<script src="./assets/js/peaks.js?v=19"></script>
-<script src="./assets/js/wav.js?v=19"></script>
-<script src="./assets/js/waveform.js?v=19"></script>
-<script src="./assets/js/player.js?v=19"></script>
+<script src="./assets/js/peaks.js?v=20"></script>
+<script src="./assets/js/wav.js?v=20"></script>
+<script src="./assets/js/waveform.js?v=20"></script>
+<script src="./assets/js/player.js?v=20"></script>
 <script>
 (function(){
   var P=window.LeepPlayer, fmt=window.LeepFmt;
@@ -150,7 +149,7 @@
     if(hasSel) dSelLen.textContent=fmt((s.selB-s.selA)*s.duration);
     dLike.classList.toggle('on',s.liked);
     dFollow.classList.toggle('on',s.following);
-    dFollowLbl.textContent = s.following?'Following':'Follow';
+    dFollowLbl.textContent = s.following?'Following':'Follow artist';
     if(document.activeElement!==dVol) dVol.value=s.volume;
   });
 
@@ -173,10 +172,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-

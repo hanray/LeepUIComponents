@@ -122,12 +122,13 @@ Two presentations share one controller and one renderer:
   (play / time / volume / follow / like), and the **selection modal** (Leep logo / close /
   Save / Preview / Download) centered on the art when a region is selected. Idle the
   waveform sits at 20%; on hover it goes full and the artwork blurs to focus the controls.
-- **Mini view / now-playing dock** (`.dock`, fixed bottom, full-width, slides up): a
-  full-width-aligned waveform (~46px) over two rows. Row 1 -- clickable **avatar**
-  (profile link) / title+artist + `ARTIST` badge / play / time / volume / like / share /
-  expand / **Follow** / **close (x)** (pauses + dismisses). Row 2 -- location / followers /
-  genre chips / one-line bio. A floating `.dock-sel` toolbar (Save / Preview / Download /
-  Expand to edit) appears when a selection exists. No metric tiles.
+- **Mini view / now-playing dock** (`.dock`, fixed bottom, full-width, **single row**,
+  slides up): avatar (round artist DP, profile link) / title (Fraunces ~18px) + artist /
+  play / inline bordered waveform (~42px) / time / volume / like / share / expand /
+  **close (x)** (pauses + dismisses). Artist details (location, followers, genres, bio) +
+  **Follow** live in a **hover card on the avatar**, so the bar stays uncluttered. A
+  floating `.dock-sel` toolbar (Save / Preview / Download / Expand to edit) appears when a
+  selection exists. No metric tiles.
 
 ### What stays available in the mini-player
 Play/pause, scrub, **select / save / download a sample**, volume, like, **follow**,
@@ -197,5 +198,6 @@ leep-audio-player/
   full-width waveform).
 - Text never relies on color alone; selection is shown by particles + brackets + fill.
 - `prefers-reduced-motion` disables all transitions/animation.
+
 
 
