@@ -78,6 +78,22 @@ Use **sentence case** everywhere except the small UPPERCASE labels.
 - Dock slide-in: **340 ms**. Tooltip/modal fade+rise: **150–200 ms**, 4–6px travel.
 - Press feedback: scale 0.96–0.98.
 
+### 1.6 Interactive control states (build every control as a variant set)
+Every clickable control has **rest / hover / active (pressed or toggled-on) / focus**.
+Build these so "all states" are real variants, not just the rest look:
+| Control | hover | active / on | focus |
+|---|---|---|---|
+| Pill button (`.btn`) | bg → `surface-2`, border → `faint` | pressed scale .98 | 2px `teal` ring, 2px offset |
+| Primary button | bg → `teal-hover` | — | ring |
+| On-image button | bg darker glass, border → `faint` | — | ring |
+| Icon button | bg → `surface-2`, border → `faint` | `on` = `teal` icon + `teal-line` border (like/follow) | ring |
+| Big play | `teal-hover` + scale 1.05 | pressed scale .96; `playing` swaps icon | ring |
+| Dock **close (×)** | text + border → `danger` (red) | — | ring |
+| Volume thumb | fill → `teal`, scale 1.15 | dragging | — |
+| Remix / talent card | border → `line-strong`, lift `translateY(-2/-3px)` | — | — |
+| Nav / rail / genre link | text → `text` (rail also bg `surface-1`) | active = `teal` + underline (nav) | — |
+Focus uses a **2px teal focus-visible ring** on every button (keyboard only).
+
 ---
 
 ## 2. Component inventory (build these, with the listed variants)
@@ -88,9 +104,11 @@ Use **sentence case** everywhere except the small UPPERCASE labels.
 | `Marker dot` | `color = violet · amber`, `state = rest · hover` |
 | `Sampled-by tooltip` | (swatch color is an instance swap / variable) |
 | `Selection modal` | single (shown state) |
-| `Big play` | `playing = false · true` |
-| `Icon button` | `type = like · follow · download · expand · report · add`, `state = default · active` |
-| `Volume` | slider (track + fill + 14px thumb) |
+| `Big play` | `playing = false · true`, `state = rest · hover` (hover = teal-hover + scale 1.05) |
+| `Icon button` | `type = like · follow · download · expand · report · add · share · close`, `state = default · hover · active · focus` |
+| `Toast` | `kind = success · info · error` (see §5.5) |
+| `Text field` | `state = rest · focus · error` (feedback textarea + timestamp) |
+| `Volume` | slider (track + fill + 14px thumb; `thumb = rest · hover`). No muted/zero variant — the speaker icon never changes |
 | `Nav bar` | `width = desktop · mobile` |
 | `Left rail item` | `state = default · active`, `count = on · off` |
 | `Breadcrumb` | — |
@@ -209,7 +227,11 @@ Layers back→front:
 ### 4.4 Feedback form
 `Leave feedback` label → textarea (`surface-2`, `line-strong`, radius 10, min-h 92,
 teal focus ring) → `Timestamp (optional)` label + input → helper text (`faint`) →
-`Comment` button (arrow icon). Posting prepends a Comment row.
+`Comment` button (arrow icon). Posting prepends a Comment row and fires a "Comment
+posted" toast. **Error state:** pressing `Comment` with an empty textarea shows inline
+error text "Enter some feedback first" in `danger` next to the button and focuses the
+field; it clears as soon as the user types. Build the textarea as `Text field`
+`state = rest · focus · error`.
 
 ### 4.5 Open stems
 Section header `Open stems` / `03 files`. Rows (`surface-1`, radius 10): name +
@@ -257,6 +279,27 @@ heights ≈ [4,10,14,6], width 2.6, in `teal`.
 
 ---
 
+## 5.5 Toast / confirmation snackbar (system feedback)
+Almost every player action confirms itself with a **toast** — a single fixed pill,
+**bottom-center** (≈92px from bottom, above the dock), that fades + rises in, holds, and
+auto-dismisses after ~2.2s. Build it once as a component; only the icon + text change.
+- **Box:** `surface-3` fill, 1px `teal-line` border, radius 10, padding 11×16, shadow
+  y10 blur30 black 45%, gap 9. Enter: opacity + 14px rise, 250ms.
+- **Contents:** a 16px leading icon + one line of text (Geist 13, `text`).
+- **Variants / messages it actually shows:**
+  - `success` (teal **check** icon): "Saved to your samples", "Sample downloaded",
+    "Link copied", "Comment posted".
+  - `info` (teal icon): "Previewing selection", "Rendering sample…" (the transient busy
+    state while the WAV encodes — there is **no** button spinner; the toast *is* the
+    loading state), "Share this track", "Player closed", "Comment reported",
+    "Select a region first" (shown if Save/Download is pressed with no selection).
+  - `error` (use `danger`): "Copy failed", "Could not render sample".
+Represent in prototype as an overlay that Smart-Animate fades in on the relevant click,
+then out. It is the only transient feedback layer, so don't skip it — it's a big part of
+how the player "feels" responsive.
+
+---
+
 ## 6. Now-playing dock (persistent, on other pages -- see `browse.html`)
 A clean **single-row** full-width fixed bottom bar (glass, top border `line-strong`,
 slides up 340ms), padded symmetrically (~28px, lines up with the nav). Left -> right:
@@ -270,7 +313,9 @@ slides up 340ms), padded symmetrically (~28px, lines up with the nav). Left -> r
   **selection toolbar** appears above the bar when a region is selected: `Sample / {len}`
   + Save + Preview + Download + `Expand to edit`.
 - Right group: `{time}` (mono) / volume / like / **share** / expand / **close (x)** (x is
-  the outermost item; pauses + dismisses the dock).
+  the outermost item; pauses + dismisses the dock and fires a "Player closed" toast). The
+  close button's **hover** turns its icon + border `danger` red; the others hover to
+  `surface-2`.
 
 No prev/next skip buttons, no metric tiles, no second row.
 
@@ -339,8 +384,12 @@ Build with **interactive components** (variant swaps on hover/press) + prototype
 | 16 | Open artist profile | click the dock **avatar** | go to the artist page (avatar also shows ring + open-link badge on hover) |
 | 17 | Artist card | hover / focus the dock **avatar** | reveal the **artist hover card** (followers, location, genres, bio, Follow) -- fade/rise |
 | 18 | Share | click **share** | native share sheet; falls back to copying the link (annotate) |
-| 19 | Close player | click the dock **x** | pause and slide the dock away |
+| 19 | Close player | click the dock **x** | pause + slide the dock away + "Player closed" toast (x hovers red) |
 | 20 | Follow | click **Follow** (in the artist card) | toggle Following (teal) |
+| 21 | Any confirm action | Save / Download / Share / Preview / Post / Report / Close | show the matching **toast** (§5.5), auto-dismiss ~2.2s |
+| 22 | Download (busy) | click **Download sample** | "Rendering sample…" toast → "Sample downloaded" (or "Could not render sample") — no button spinner |
+| 23 | Empty submit | press **Comment** with empty field | inline `danger` error "Enter some feedback first"; clears on input (`Text field` error state) |
+| 24 | Control hover / focus | hover or keyboard-focus any control | swap to the `hover` / `focus` variant (§1.6) |
 
 ---
 
@@ -376,7 +425,11 @@ Build with **interactive components** (variant swaps on hover/press) + prototype
 - [ ] Mini-player dock + Discover page, with slide-in and state carry.
 - [ ] Mobile frame ~375 (search hidden, taller hero, Select button, stacked below-grid,
       wrapped dock) built from the §7 breakpoints — both desktop and mobile frames delivered.
-- [ ] Prototype wiring for interactions 1–15; live-only items annotated.
+- [ ] Toast / confirmation snackbar component (success / info / error) wired to Save,
+      Download, Share, Preview, Post, Report, Close, and empty-selection.
+- [ ] Every control built with rest / hover / active / focus variants (§1.6); dock × hovers red.
+- [ ] Feedback textarea rest / focus / error (empty-submit) states.
+- [ ] Prototype wiring for interactions 1–24; live-only items annotated.
 
 _Reference build: `index.html`, `browse.html`, `assets/`, and `DESIGN-SYSTEM.md`._
 

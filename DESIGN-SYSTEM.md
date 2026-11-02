@@ -168,6 +168,32 @@ waveform needs. UI subscribes via `on()` and re-renders on every state change.
 (handles mono/stereo, interleaved). `download(blob, name)` saves it. The buffer is
 decoded lazily via `fetch + decodeAudioData` on first download/preview.
 
+### System feedback (toasts)
+Nearly every action confirms itself with a **toast** — one fixed pill, bottom-center
+(~92px up, above the dock), `surface-3` + `green-line` border + teal check icon, fades /
+rises in and auto-dismisses after ~2.2s. It's dispatched via a `leep:toast` custom event
+(`document.dispatchEvent(new CustomEvent('leep:toast',{detail:msg}))`) so any module can
+fire it. Messages: "Saved to your samples", "Sample downloaded", "Link copied",
+"Comment posted" (success); "Previewing selection", **"Rendering sample…"** (the transient
+busy state while the WAV encodes — the toast *is* the loading indicator, there's no button
+spinner), "Share this track", "Player closed", "Comment reported", "Select a region first"
+(info); "Copy failed", "Could not render sample" (error). This is the only transient
+feedback layer — treat it as part of the component, not an afterthought.
+
+### Control states
+Every control ships **rest / hover / active (pressed or toggled-on) / focus**:
+buttons hover to `surface-2` / `faint` border (primary → `green-hover`, big play →
+`green-hover` + scale 1.05); toggles (`.on` like / follow) go `teal` icon + `green-line`
+border; the dock **close (×)** hovers to `danger` red; the volume thumb hovers `teal` +
+scale 1.15; remix / talent cards lift on hover. Keyboard focus shows a 2px teal
+focus-visible ring. The volume control has **no** muted/zero variant — the speaker icon is
+static.
+
+### Feedback form states
+The feedback textarea is rest / focus (teal ring) / **error**: submitting it empty shows
+inline `danger` text "Enter some feedback first" beside the Comment button and refocuses
+the field; it clears on the next keystroke.
+
 ---
 
 ## 5. File structure
